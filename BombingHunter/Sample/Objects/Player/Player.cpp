@@ -19,8 +19,8 @@ Player::~Player()
 void Player::Initialize()
 {
 	//画像の読み込み
-	animation[0] = LoadGraph("Resource/Image/Tri.png");
-	animation[1] = LoadGraph("Resource/Image/Tri.png");
+	animation[0] = LoadGraph("Resource/Imagezu/tobu1.png");
+	animation[1] = LoadGraph("Resource/Imagezu/tobu2.png");
 
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1)
@@ -51,7 +51,7 @@ void Player::Update()
 void Player::Draw() const
 {
 	//プレイヤーの画像を描画
-	DrawRotaGraphF(location.x, location.y, radian, image, TRUE, filp_flag);
+	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, filp_flag);
 
 	//デバッグ用
 #if _DEBUG
@@ -66,6 +66,14 @@ void Player::Draw() const
 }
 
 //終了時処理
+void Player::Finalize()
+{
+	//使用した画像を開放する
+	DeleteGraph(animation[0]);
+	DeleteGraph(animation[1]);
+}
+
+//当たり判定通知処理
 void Player::OnHitCollision(GameObject* hit_object)
 {
 	//当たった時の処理

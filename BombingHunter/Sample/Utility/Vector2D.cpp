@@ -65,6 +65,16 @@ Vector2D& Vector2D::operator-=(const Vector2D& location)
 	return *this;
 }
 
+const Vector2D Vector2D::operator*(const float& scalar) const
+{
+	Vector2D result = Vector2D(0.0f);
+
+	result.x = this->x * scalar;
+	result.y = this->y * scalar;
+
+	return result;
+}
+
 const Vector2D Vector2D::operator*(const Vector2D& location) const
 {
 	Vector2D result = Vector2D(0.0f);
