@@ -1,9 +1,10 @@
 #include "Scene.h"
 #include"DxLib.h"
 #include"../Objects/Player/Player.h"
+#include"../Objects/Enemy/Enemy.h"
 
 //コンストラクタ
-Scene::Scene() : objects(), background_image(NULL)
+Scene::Scene() : objects(), background_image(NULL), sound(NULL)
 {
 
 }
@@ -20,8 +21,18 @@ void Scene::Initialize()
 {
 	//プレイヤーを生成する
 	CreateObject<Player>(Vector2D(320.0f, 60.0f));
+	CreateObject<Enemy>(Vector2D(640.0f, 380.0f));
 
 	background_image = LoadGraph("Resource/Imagezu/背景2.png");
+
+	sound = LoadSoundMem("Resource/Imagezu/BGM_arrows.wav");
+
+	if (sound == -1)
+	{
+		throw("ne-yo");
+	}
+
+	PlaySoundMem(sound, DX_PLAYTYPE_LOOP, TRUE);
 
 	//エラーチェック
 	if (background_image == -1)
@@ -51,6 +62,7 @@ void Scene::Draw() const
 	{
 		obj->Draw();
 	}
+
 }
 
 //終了時処理
@@ -68,6 +80,7 @@ void Scene::Finalize()
 	//各オブジェクトを削除する
 	for (GameObject* obj : objects)
 	{
+		DeleteSoundMem(sound);
 		obj->Finalize();
 		delete obj;
 	}

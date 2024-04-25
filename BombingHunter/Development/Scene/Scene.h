@@ -7,6 +7,7 @@ class Scene
 {
 private:
 	int background_image;
+	int sound;
 
 	std::vector<GameObject*>objects;
 
