@@ -6,8 +6,6 @@
 class Scene
 {
 private:
-	int background_image;
-
 	std::vector<GameObject*>objects;
 
 public:
@@ -20,6 +18,9 @@ public:
 	void Finalize();    //終了処理
 
 private:
+	//当たり判定チェック処理
+	void HitCheckObject(GameObject* a, GameObject* b);
+
 	//オブジェクト生成処理
 	template<class T>
 	T* CreateObject(const Vector2D& location)

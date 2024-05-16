@@ -103,13 +103,13 @@ void Player::Movement()
 	}
 
 	//•Ç”»’è¶¬
-	if (location.x > 600.0f)
+	if (location.x > 630.0f)
 	{
-		location.x = 600.0f;
+		location.x = 630.0f;
 	}
-	if (location.x < 40.0f)
+	if (location.x < 10.0f)
 	{
-		location.x = 40.0f;
+		location.x = 10.0f;
 	}
 
 	//Œ»Ý‚ÌˆÊ’uÀ•W‚É‘¬‚³‚ð‰ÁŽZ‚·‚é

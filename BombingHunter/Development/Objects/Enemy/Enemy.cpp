@@ -36,6 +36,15 @@ void Enemy::Initialize()
 
 	//初期画像の設定
 	image = animation[0];
+
+	if (location.x <= 300.0f)
+	{
+		velocity.x = 1.0f;
+	}
+	else 
+	{
+		velocity.x = -1.0f;
+	}
 }
 
 //更新処理
@@ -51,11 +60,11 @@ void Enemy::Update()
 //描画処理
 void Enemy::Draw() const
 {
-	//画面反転フラグ
+	//画面反転フラグ(FALSE=右　TURE=左)
 	int flip_flag = FALSE;
 
 	//進行方向によって、反転状態を決定する
-	if (direction.x > 0.0f)
+	if (velocity.x > 0.0f)
 	{
 		flip_flag = FALSE;
 	}
@@ -63,7 +72,8 @@ void Enemy::Draw() const
 	{
 		flip_flag = TRUE;
 	}
-	//プレイヤーの画像を描画
+
+	//ハコテキの画像を描画
 	DrawRotaGraphF(location.x, location.y, 0.6, radian, image, TRUE, flip_flag);
 
 	__super::Draw();
@@ -86,13 +96,19 @@ void Enemy::OnHitCollision(GameObject* hit_object)
 //移動処理
 void Enemy::Movement()
 {
-	//移動の速さ
-	Vector2D velocity = 0.0f;
-
-	velocity.x = -1;
+	/*if (location.x > 640.0f || location.x<-10.0f)
+	{
+		velocity.x *= -1;
+	}*/
 
 	//現在の位置座標に速さを加算する
 	location += velocity;
+
+	//
+	if (location.x < -20 || location.x > 660)
+	{
+		Finalize();
+	}
 }
 
 //アニメーション制御

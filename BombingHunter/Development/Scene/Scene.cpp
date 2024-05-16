@@ -4,7 +4,7 @@
 #include"../Objects/Enemy/Enemy.h"
 
 //コンストラクタ
-Scene::Scene() : objects(), background_image(NULL), sound(NULL)
+Scene::Scene() : objects(), background_image(NULL), sound(NULL),enemy_count()
 {
 
 }
@@ -22,6 +22,7 @@ void Scene::Initialize()
 	//プレイヤーを生成する
 	CreateObject<Player>(Vector2D(320.0f, 60.0f));
 	CreateObject<Enemy>(Vector2D(640.0f, 380.0f));
+	CreateObject<Enemy>(Vector2D(0.0f, 380.0f));
 
 	background_image = LoadGraph("Resource/Imagezu/背景2.png");
 
@@ -39,11 +40,22 @@ void Scene::Initialize()
 	{
 		throw("Resource/Imagezu/to背景2.pngがないです。\n");
 	}
+
+	enemy_count = 0;
 }
 
 //更新処理
 void Scene::Update()
 {
+	enemy_count++;
+
+	if (enemy_count >= 500)
+	{
+		CreateObject<Enemy>(Vector2D(640.0f, 380.0f));
+		CreateObject<Enemy>(Vector2D(0.0f, 380.0f));
+		enemy_count = 0;
+	}
+
 	//シーンに存在するオブジェクトの更新処理
 	for (GameObject* obj : objects)
 	{
@@ -87,4 +99,5 @@ void Scene::Finalize()
 
 	//動的配列の解放
 	objects.clear();
+
 }

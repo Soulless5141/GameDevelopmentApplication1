@@ -8,6 +8,7 @@ class Scene
 private:
 	int background_image;
 	int sound;
+	int enemy_count;
 
 	std::vector<GameObject*>objects;
 
@@ -37,10 +38,10 @@ private:
 			throw std::string("ゲームオブジェクトが生成できませんでした");
 		}
 
-		//初期化処理
-		new_object->Initialize();
 		//位置情報の設定
 		new_object->SetLocation(location);
+		//初期化処理
+		new_object->Initialize();
 
 		//オブジェクトリストに追加
 		objects.push_back(new_object);
