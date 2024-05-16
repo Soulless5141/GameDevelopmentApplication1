@@ -1,7 +1,9 @@
 #include "Scene.h"
 #include"DxLib.h"
 #include"../Objects/Player/Player.h"
+#include"../Objects/Player/Bom.h"
 #include"../Objects/Enemy/Enemy.h"
+#include"../Utility/InputControl.h"
 
 //コンストラクタ
 Scene::Scene() : objects(), background_image(NULL), sound(NULL),enemy_count()
@@ -21,8 +23,9 @@ void Scene::Initialize()
 {
 	//プレイヤーを生成する
 	CreateObject<Player>(Vector2D(320.0f, 60.0f));
-	CreateObject<Enemy>(Vector2D(640.0f, 380.0f));
-	CreateObject<Enemy>(Vector2D(0.0f, 380.0f));
+	CreateObject<Bom>(Vector2D(320.0f, 60.0f));
+	CreateObject<Enemy>(Vector2D(640.0f, 380.0f));    //ハコテキ右から
+	CreateObject<Enemy>(Vector2D(0.0f, 380.0f));      //ハコテキ左から
 
 	background_image = LoadGraph("Resource/Imagezu/背景2.png");
 
@@ -54,6 +57,12 @@ void Scene::Update()
 		CreateObject<Enemy>(Vector2D(640.0f, 380.0f));
 		CreateObject<Enemy>(Vector2D(0.0f, 380.0f));
 		enemy_count = 0;
+	}
+
+	//zキーを押したら、敵を生成する
+	if (InputControl::GetKeyDown(KEY_INPUT_Z))
+	{
+		CreateObject<Bom>(Vector2D(100.0f, 60.0f));
 	}
 
 	//シーンに存在するオブジェクトの更新処理
