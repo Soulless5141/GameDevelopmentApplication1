@@ -77,7 +77,7 @@ void Enemy::Finalize()
 	//使用した画像を開放する
 	DeleteGraph(animation[0]);
 	DeleteGraph(animation[1]);
-	/*box_size = NULL;*/
+	box_size = 0;
 }
 
 //当たり判定通知処理
@@ -85,6 +85,7 @@ void Enemy::OnHitCollision(GameObject* hit_object)
 {
 	//当たった時の処理
 	direction = 0.0f;
+	//location = delete;
 	Finalize();
 }
 

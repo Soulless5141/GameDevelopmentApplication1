@@ -4,10 +4,13 @@
 //コンストラクタ
 GameObject::GameObject() :
 	location(0.0f),
+	box_size(0),
 	scale(0.0),
 	radian(0.0),
 	image(0),
-	sound(0)
+	sound(0),
+	mode(0),
+	delete_flag(false)
 {
 
 }
@@ -33,7 +36,19 @@ void GameObject::Update()
 //描画処理
 void GameObject::Draw() const
 {
+	//当たり判定の可視化
+#ifdef D_PIVOT_CENTER
 
+	Vector2D tl = location - (box_size / 2.0f);
+	Vector2D br = location + (box_size / 2.0f);
+
+	DrawBoxAA(tl.x, tl.y, br.x, br.y, GetColor(255, 0, 0), FALSE);
+#else
+	Vector2D tl = location;
+	Vector2D br = location + box_size;
+
+	DrawBoxAA(tl.x, tl.y, br.x, br.y, GetColor(255, 0, 0), FALSE);
+#endif  // D_PIVOT_CENTER
 }
 
 //終了処理
@@ -46,6 +61,7 @@ void GameObject::Finalize()
 void GameObject::OnHitCollision(GameObject* hit_object)
 {
 	//当たった時に行う処理
+	Finalize();
 }
 
 //位置情報取得処理
@@ -58,4 +74,19 @@ Vector2D GameObject::GetLocation() const
 void GameObject::SetLocation(const Vector2D& location)
 {
 	this->location = location;
+}
+
+Vector2D GameObject::GetBoxSize() const
+{
+	return box_size;
+}
+
+int GameObject::GetMode()
+{
+	return this->mode;
+}
+
+int GameObject::DeleteFlag()
+{
+	return delete_flag;
 }

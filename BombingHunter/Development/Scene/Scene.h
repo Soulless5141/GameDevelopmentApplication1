@@ -9,6 +9,9 @@ private:
 	int background_image;
 	int sound;
 	int enemy_count;
+	int bom_set;
+	int bom_count;
+	int mode;
 
 	std::vector<GameObject*>objects;
 
@@ -20,6 +23,10 @@ public:
 	void Update();      //更新処理
 	void Draw() const;  //描画処理
 	void Finalize();    //終了処理
+
+private:
+	//当たり判定チェック処理
+	void HitCheckObject(GameObject* a, GameObject* b);
 
 private:
 	//オブジェクト生成処理
@@ -48,6 +55,7 @@ private:
 
 		//インスタンスのポインタを返却
 		return new_instance;
+
 	}
 };
 

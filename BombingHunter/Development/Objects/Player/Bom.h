@@ -2,11 +2,16 @@
 
 #include"../GameObject.h"
 
+
 class Bom :public GameObject
 {
 private:
-	int animation[1];      //アニメーション画像
+	int animation[4];      //アニメーション画像
 	int animation_count;   //アニメーション時間
+	int count;
+	int next_flag;
+	Vector2D direction;    //進行方向
+
 
 public:
 	Bom();
@@ -16,10 +21,12 @@ public:
 	virtual void Update() override;      //更新処理
 	virtual void Draw() const override;  //描画処理
 	virtual void Finalize() override;    //終了時処理
+	
 
 	//当たり判定通知処理
 	virtual void OnHitCollision(GameObject* hit_object) override;
 
+	void Func(Vector2D player);
 private:
 	//移動処理
 	void Movement();

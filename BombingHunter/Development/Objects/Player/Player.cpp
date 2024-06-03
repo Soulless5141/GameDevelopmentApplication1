@@ -36,6 +36,8 @@ void Player::Initialize()
 
 	//‰Šú‰æ‘œ‚Ìİ’è
 	image = animation[0];
+
+	mode = 0;
 }
 
 //XVˆ—

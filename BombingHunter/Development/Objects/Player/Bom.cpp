@@ -1,11 +1,15 @@
 #include "Bom.h"
 #include"../../Utility/InputControl.h"
 #include"DxLib.h"
+#include"Player.h"
 
 //コンストラクタ
-Bom::Bom() : animation_count(0)
+Bom::Bom() : animation_count(0), count(0),next_flag(false)
 {
 	animation[0] = NULL;
+	animation[1] = NULL;
+	animation[2] = NULL;
+	animation[3] = NULL;
 }
 
 //デストラクタ
@@ -19,21 +23,36 @@ void Bom::Initialize()
 {
 	//画像の読み込み
 	animation[0] = LoadGraph("Resource/Imagezu/爆弾.png");
+	animation[1] = LoadGraph("Resource/Imagezu/baku1.png");
+	animation[2] = LoadGraph("Resource/Imagezu/baku2.png");
+	animation[3] = LoadGraph("Resource/Imagezu/baku3.png");
 
 	//エラーチェック
 	if (animation[0] == -1)
 	{
 		throw("ボムの画像がありません\n");
 	}
+	if (animation[1] == -1)
+	{
+		throw("ボムの画像がありません\n");
+	}
 
 	//向きの設定
-	radian = 0.5;
+	radian = 90 * 3.14 / 180;
 
 	//大きさの設定
-	scale = 32.0;
+	box_size = 32.0;
 
 	//初期画像の設定
 	image = animation[0];
+
+	mode = 1;
+
+	//爆発モーションに移っていいかの確認
+	next_flag = false;
+
+	direction = Vector2D(0.0, 1.0);
+
 }
 
 //更新処理
@@ -51,52 +70,74 @@ void Bom::Draw() const
 	//プレイヤーの画像を描画
 	DrawRotaGraph(location.x, location.y, 0.6, radian, image, TRUE);
 
-
-	//デバッグ用
-#if _DEBUG
-	//当たり判定の可視化
-	Vector2D box_collision_upper_left = location - (Vector2D(1.0f) * (float)scale / 2.0f);
-	Vector2D box_collision_lower_right = location + (Vector2D(1.0f) * (float)scale / 2.0f);
-
-	DrawBoxAA(box_collision_upper_left.x, box_collision_upper_left.y,
-		box_collision_lower_right.x, box_collision_lower_right.y,
-		GetColor(255, 0, 0), FALSE);
-#endif
+	__super::Draw();
 }
 
 //終了時処理
 void Bom::Finalize()
 {
+	box_size = 0;
+	location = 0;
+	delete_flag = true;
 	//使用した画像を開放する
-	DeleteGraph(animation[0]);
+	DeleteGraph(image);
 }
 
 //当たり判定通知処理
 void Bom::OnHitCollision(GameObject* hit_object)
 {
 	//当たった時の処理
+	next_flag = true;
+	direction = 0.0f;
+	Vector2D velocity = 0.0f;
 }
 
 //移動処理
 void Bom::Movement()
 {
-	//移動の速さ
-	Vector2D velocity = 0.5f;
-
 	//現在の位置座標に速さを加算する
-	location += velocity;
+	location += direction;
+
+	if (location.y >= 410)
+	{
+		next_flag = true;
+		direction = 0.0f;
+	}
 }
 
 //アニメーション制御
 void Bom::AnimeControl()
 {
 	//画像の切り替え
-	/*if (image == animation[0])
+	if (next_flag == true)
 	{
-		image = animation[1];
+		count++;
+		if (image == animation[0])
+		{
+			box_size = 0;
+			radian = 0;
+			image = animation[1];
+			count = 0;
+		}
+		else if (count >= 10 && image == animation[1])
+		{
+			image = animation[2];
+			count = 0;
+		}
+		else if (count >= 10 && image == animation[2])
+		{
+			image = animation[3];
+			count = 0;
+		}
+		else if (count >= 10 && image == animation[3])
+		{
+			Finalize();
+		}
 	}
-	else
-	{
-		image = animation[0];
-	}*/
 }
+	
+
+//void Bom::Func(Vector2D player)
+//{
+//	player = 0;
+//}

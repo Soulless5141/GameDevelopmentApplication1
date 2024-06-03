@@ -32,11 +32,12 @@ void Enemy::Initialize()
 	radian = 0.0;
 
 	//大きさの設定
-	scale = 32.0;
+	box_size = 64.0;
 
 	//初期画像の設定
 	image = animation[0];
 
+	//生成時の移動方向
 	if (location.x <= 300.0f)
 	{
 		velocity.x = 1.0f;
@@ -45,6 +46,8 @@ void Enemy::Initialize()
 	{
 		velocity.x = -1.0f;
 	}
+
+	mode = 2;
 }
 
 //更新処理
@@ -82,6 +85,10 @@ void Enemy::Draw() const
 //終了時処理
 void Enemy::Finalize()
 {
+	box_size = 0;
+	direction = 0.0f;
+	location = 0;
+	delete_flag = true;
 	//使用した画像を開放する
 	DeleteGraph(animation[0]);
 	DeleteGraph(animation[1]);
@@ -91,6 +98,7 @@ void Enemy::Finalize()
 void Enemy::OnHitCollision(GameObject* hit_object)
 {
 	//当たった時の処理
+	Finalize();
 }
 
 //移動処理
