@@ -71,6 +71,7 @@ void Player::Draw() const
 //終了時処理
 void Player::Finalize()
 {
+	delete_flag = true;
 	//使用した画像を開放する
 	DeleteGraph(animation[0]);
 	DeleteGraph(animation[1]);
@@ -98,10 +99,6 @@ void Player::Movement()
 	{
 		velocity.x += 1.0f;
 		filp_flag = FALSE;
-	}
-	else
-	{
-		velocity.x += 0.0f;
 	}
 
 	//壁判定生成

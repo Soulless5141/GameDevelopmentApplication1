@@ -1,17 +1,19 @@
 #pragma once
-
 #include"../GameObject.h"
 
-class Hakoteki : public GameObject
+class Hapyi : public GameObject
 {
 private:
 	int animation[2];      //アニメーション画像
 	int animation_count;   //アニメーション時間
+	int enemy_number;
 	Vector2D direction;    //進行方向
+	//移動の速さ
+	Vector2D velocity = 0.0f;
 
 public:
-	Hakoteki();
-	~Hakoteki();
+	Hapyi();
+	~Hapyi();
 
 	virtual void Initialize() override;  //初期化処理
 	virtual void Update() override;      //更新処理
@@ -27,3 +29,4 @@ private:
 	//アニメーション制御
 	void AnimeControl();
 };
+

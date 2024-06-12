@@ -48,7 +48,7 @@ void Scene::Update()
 	//zƒL[‚ğ‰Ÿ‚µ‚½‚çA“G‚ğ¶¬‚·‚é
 	if (InputControl::GetKeyDown(KEY_INPUT_Z))
 	{
-		CreateObject<Enemy>(Vector2D(100.0f, 400.0f));
+		CreateObject<Hakoteki>(Vector2D(100.0f, 400.0f));
 	}
 }
 

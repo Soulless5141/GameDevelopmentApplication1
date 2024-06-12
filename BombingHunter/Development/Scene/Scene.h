@@ -8,10 +8,11 @@ class Scene
 private:
 	int background_image;
 	int sound;
-	int enemy_count;
+	int enemy_count[4];
 	int bom_set;
-	int bom_count;
+	int cool_count;
 	int mode;
+	int score;
 
 	std::vector<GameObject*>objects;
 

@@ -4,7 +4,7 @@
 #include"Player.h"
 
 //コンストラクタ
-Bom::Bom() : animation_count(0), count(0),next_flag(false)
+Bom::Bom() : animation_count(0), bom_count(0),next_flag(false)
 {
 	animation[0] = NULL;
 	animation[1] = NULL;
@@ -52,6 +52,8 @@ void Bom::Initialize()
 	next_flag = false;
 
 	direction = Vector2D(0.0, 1.0);
+
+	enemy_score = 0;
 
 }
 
@@ -111,25 +113,25 @@ void Bom::AnimeControl()
 	//画像の切り替え
 	if (next_flag == true)
 	{
-		count++;
+		animation_count++;
 		if (image == animation[0])
 		{
 			box_size = 0;
 			radian = 0;
 			image = animation[1];
-			count = 0;
+			animation_count = 0;
 		}
-		else if (count >= 10 && image == animation[1])
+		else if (animation_count >= 10 && image == animation[1])
 		{
 			image = animation[2];
-			count = 0;
+			animation_count = 0;
 		}
-		else if (count >= 10 && image == animation[2])
+		else if (animation_count >= 10 && image == animation[2])
 		{
 			image = animation[3];
-			count = 0;
+			animation_count = 0;
 		}
-		else if (count >= 10 && image == animation[3])
+		else if (animation_count >= 10 && image == animation[3])
 		{
 			Finalize();
 		}

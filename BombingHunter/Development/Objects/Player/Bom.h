@@ -7,8 +7,8 @@ class Bom :public GameObject
 {
 private:
 	int animation[4];      //アニメーション画像
-	int animation_count;   //アニメーション時間
-	int count;
+	int animation_count;   //アニメーション変更時間
+	int bom_count;
 	int next_flag;
 	Vector2D direction;    //進行方向
 

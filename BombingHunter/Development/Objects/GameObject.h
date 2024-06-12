@@ -16,6 +16,8 @@ protected:
 	int sound;           //Ä¶‚·‚é‰¹Œ¹
 	int mode;
 	int delete_flag;
+	int now_score;
+	int enemy_score;
 
 public:
 	GameObject();
@@ -39,5 +41,6 @@ public:
 
 	int GetMode();
 	int DeleteFlag();
+	int GetScore();
 };
 

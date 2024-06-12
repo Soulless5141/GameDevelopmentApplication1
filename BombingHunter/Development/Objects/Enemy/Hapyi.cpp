@@ -1,31 +1,31 @@
-#include "Enemy.h"
+#include "Hapyi.h"
 #include"../../Utility/InputControl.h"
 #include"DxLib.h"
+#include"stdlib.h"
 
 //コンストラクタ
-Enemy::Enemy() : animation_count(0), direction(0.0f)
+Hapyi::Hapyi() : animation_count(0), direction(0.0f), enemy_number(NULL)
 {
-	animation[0] = NULL;
-	animation[1] = NULL;
+	
 }
 
 //デストラクタ
-Enemy::~Enemy()
+Hapyi::~Hapyi()
 {
 
 }
 
 //初期化処理
-void Enemy::Initialize()
+void Hapyi::Initialize()
 {
 	//画像の読み込み
-	animation[0] = LoadGraph("Resource/Imagezu/1 (1).png");
-	animation[1] = LoadGraph("Resource/Imagezu/2 (1).png");
+	animation[0] = LoadGraph("Resource/Imagezu/1 (2).png");//ハーピィ1
+	animation[1] = LoadGraph("Resource/Imagezu/2 (2).png");//ハーピィ1
 
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1)
 	{
-		throw("ハコテキの画像がありません\n");
+		throw("ハーピィの画像がありません\n");
 	}
 
 	//向きの設定
@@ -36,22 +36,27 @@ void Enemy::Initialize()
 
 	//初期画像の設定
 	image = animation[0];
+	
+	location.y = 200;
+
+	enemy_score = -3000;
+	
 
 	//生成時の移動方向
 	if (location.x <= 300.0f)
 	{
-		velocity.x = 1.0f;
+		velocity.x = (rand() % 8) / 10.0f + 0.2f;
 	}
-	else 
+	else
 	{
-		velocity.x = -1.0f;
+		velocity.x = -((rand() % 8) / 10.0f + 0.2);
 	}
 
 	mode = 2;
 }
 
 //更新処理
-void Enemy::Update()
+void Hapyi::Update()
 {
 	//移動処理
 	Movement();
@@ -61,7 +66,7 @@ void Enemy::Update()
 }
 
 //描画処理
-void Enemy::Draw() const
+void Hapyi::Draw() const
 {
 	//画面反転フラグ(FALSE=右　TURE=左)
 	int flip_flag = FALSE;
@@ -77,13 +82,21 @@ void Enemy::Draw() const
 	}
 
 	//ハコテキの画像を描画
-	DrawRotaGraphF(location.x, location.y, 0.6, radian, image, TRUE, flip_flag);
+	switch (enemy_number)
+	{
+	case 0:
+		DrawRotaGraphF(location.x, location.y, 0.6, radian, image, TRUE, flip_flag);
+		break;
+	default:
+		DrawRotaGraphF(location.x, location.y, 0.6, radian, image, TRUE, flip_flag);
+		break;
+	}
 
 	__super::Draw();
 }
 
 //終了時処理
-void Enemy::Finalize()
+void Hapyi::Finalize()
 {
 	box_size = 0;
 	direction = 0.0f;
@@ -92,23 +105,20 @@ void Enemy::Finalize()
 	//使用した画像を開放する
 	DeleteGraph(animation[0]);
 	DeleteGraph(animation[1]);
+	DeleteGraph(image);
 }
 
 //当たり判定通知処理
-void Enemy::OnHitCollision(GameObject* hit_object)
+void Hapyi::OnHitCollision(GameObject* hit_object)
 {
+	GetScore();
 	//当たった時の処理
 	Finalize();
 }
 
 //移動処理
-void Enemy::Movement()
+void Hapyi::Movement()
 {
-	/*if (location.x > 640.0f || location.x<-10.0f)
-	{
-		velocity.x *= -1;
-	}*/
-
 	//現在の位置座標に速さを加算する
 	location += velocity;
 
@@ -120,7 +130,7 @@ void Enemy::Movement()
 }
 
 //アニメーション制御
-void Enemy::AnimeControl()
+void Hapyi::AnimeControl()
 {
 	//フレームカウントを加算する
 	animation_count++;
@@ -136,7 +146,7 @@ void Enemy::AnimeControl()
 		{
 			image = animation[1];
 		}
-		else
+		else if (image == animation[1])
 		{
 			image = animation[0];
 		}

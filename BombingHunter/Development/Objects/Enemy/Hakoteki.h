@@ -2,18 +2,19 @@
 
 #include"../GameObject.h"
 
-class Enemy : public GameObject
+class Hakoteki : public GameObject
 {
 private:
 	int animation[2];      //アニメーション画像
 	int animation_count;   //アニメーション時間
+	int enemy_number;
 	Vector2D direction;    //進行方向
 	//移動の速さ
 	Vector2D velocity = 0.0f;
 
 public:
-	Enemy();
-	~Enemy();
+	Hakoteki();
+	~Hakoteki();
 
 	virtual void Initialize() override;  //初期化処理
 	virtual void Update() override;      //更新処理

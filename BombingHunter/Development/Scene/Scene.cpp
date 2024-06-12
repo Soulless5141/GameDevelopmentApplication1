@@ -3,13 +3,16 @@
 #include"stdlib.h"
 #include"../Objects/Player/Player.h"
 #include"../Objects/Player/Bom.h"
-#include"../Objects/Enemy/Enemy.h"
+#include"../Objects/Enemy/Hakoteki.h"
+#include"../Objects/Enemy/Haneteki.h"
+#include"../Objects/Enemy/Daiya.h"
+#include"../Objects/Enemy/Hapyi.h"
 #include"../Utility/InputControl.h"
 
 #define D_PIVOT_CENTER
 
 //コンストラクタ
-Scene::Scene() : objects(), background_image(NULL), sound(NULL),enemy_count(),bom_set(TRUE),bom_count(0),mode(NULL)
+Scene::Scene() : objects(), background_image(NULL), sound(NULL),enemy_count(),bom_set(TRUE),cool_count(0),mode(NULL),score(0)
 {
 
 }
@@ -26,9 +29,6 @@ void Scene::Initialize()
 {
 	//プレイヤーを生成する
 	CreateObject<Player>(Vector2D(320.0f, 60.0f));
-	//CreateObject<Bom>(Vector2D(320.0f, 60.0f));
-	CreateObject<Enemy>(Vector2D(640.0f, 380.0f));    //ハコテキ右から
-	CreateObject<Enemy>(Vector2D(0.0f, 380.0f));      //ハコテキ左から
 
 	background_image = LoadGraph("Resource/Imagezu/背景2.png");
 
@@ -47,7 +47,10 @@ void Scene::Initialize()
 		throw("Resource/Imagezu/to背景2.pngがないです。\n");
 	}
 
-	enemy_count = 0;
+	for (int i = 0; enemy_count[4]; i++)
+	{
+		enemy_count[i] = 0;
+	}
 }
 
 //更新処理
@@ -60,12 +63,69 @@ void Scene::Update()
 	}
 
 	//時間経過で敵の生成
-	enemy_count++;
-	if (enemy_count >= 600)
+	for (int i = 0; i <= 3; i++)
 	{
-		CreateObject<Enemy>(Vector2D(640.0f, 380.0f));
-		CreateObject<Enemy>(Vector2D(0.0f, 381.0f));
-		enemy_count = ((rand() % 300) + 200);
+		enemy_count[i] += 1;
+	}
+
+	//ハネテキ出現頻度
+	if (enemy_count[0] >= 500)
+	{
+		if (GetRand(2) == 1)
+		{
+
+			CreateObject<Haneteki>(Vector2D(640.0f, 380.0f));
+		}
+		else
+		{
+			CreateObject<Haneteki>(Vector2D(0.0f, 381.0f));
+		}
+		enemy_count[0] = GetRand(100);
+	}
+
+	//ハコテキ出現頻度
+	if (enemy_count[1] >= 1500)
+	{
+		if (GetRand(2) == 1)
+		{
+			CreateObject<Hakoteki>(Vector2D(640.0f, 380.0f));
+		}
+		else
+		{
+			CreateObject<Hakoteki>(Vector2D(0.0f, 381.0f));
+		}
+		enemy_count[1] = GetRand(600) + 300;
+	}
+
+	//ダイア出現頻度
+	if (enemy_count[2] >= 2500)
+	{
+		if (GetRand(2) == 1)
+		{
+
+			CreateObject<Daiya>(Vector2D(640.0f, 380.0f));
+		}
+		else
+		{
+			CreateObject<Daiya>(Vector2D(0.0f, 381.0f));
+		}
+		enemy_count[2] = (GetRand(1000) + 700);
+	}
+
+
+	//ハーピィ出現頻度
+	if (enemy_count[3] >= 1000)
+	{
+		if (GetRand(2) == 1)
+		{
+
+			CreateObject<Hapyi>(Vector2D(640.0f, 380.0f));
+		}
+		else
+		{
+			CreateObject<Hapyi>(Vector2D(0.0f, 381.0f));
+		}
+		enemy_count[3] = (GetRand(100) + 200);
 	}
 
 	//オブジェクト同士の当たり判定チェック
@@ -83,22 +143,20 @@ void Scene::Update()
 	{
 		//CreateObject<Bom>(Vector2D())->Func();
 		CreateObject<Bom>(objects[0]->GetLocation());
-		//CreateObject<Bom>(Vector2D(50,50));
 		bom_set = FALSE;
 	}
-
-	if (InputControl::GetKey(KEY_INPUT_X) && bom_set == TRUE)
+	if (InputControl::GetKey(KEY_INPUT_X))
 	{
 		CreateObject<Bom>(objects[0]->GetLocation());
 	}
 
 	if (bom_set == FALSE)
 	{
-		bom_count++;
-		if (bom_count >= 0)
+		cool_count++;
+		if (cool_count >= 0)
 		{
 			bom_set = TRUE;
-			bom_count = 0;
+			cool_count = 0;
 		}
 	}
 
@@ -122,7 +180,8 @@ void Scene::Draw() const
 	{
 		obj->Draw();
 	}
-	
+
+	DrawFormatString(20, 450, GetColor(255, 255, 255), "Score %d", score);
 }
 
 //終了時処理
@@ -173,6 +232,18 @@ void Scene::HitCheckObject(GameObject* a, GameObject* b)
 			//当たったことをオブジェクトに通知する
 			a->OnHitCollision(b);
 			b->OnHitCollision(a);
+			if (fr == 2)
+			{
+				score += a->GetScore();
+			}
+			else if (gt == 2)
+			{
+				score += b->GetScore();
+			}
+			if (score < 0)
+			{
+				score = 0;
+			}
 		}
 	}
 }
