@@ -4,7 +4,7 @@
 #include"stdlib.h"
 
 //コンストラクタ
-Hakoteki::Hakoteki() : animation_count(0), direction(0.0f),enemy_number(NULL)
+Hakoteki::Hakoteki() : animation_count(0), direction(0.0f)
 {
 	animation[0] = NULL;
 	animation[1] = NULL;
@@ -44,11 +44,11 @@ void Hakoteki::Initialize()
 	//生成時の移動方向
 	if (location.x <= 300.0f)
 	{
-		velocity.x = (rand() % 8) / 10.0f + 0.2f;
+		velocity.x = GetRand(6) / 10.0f + 0.2f;
 	}
 	else 
 	{
-		velocity.x = -((rand() % 8) / 10.0f + 0.2);
+		velocity.x = -(GetRand(6) / 10.0f + 0.2);
 	}
 
 	mode = 2;
@@ -81,15 +81,7 @@ void Hakoteki::Draw() const
 	}
 
 	//ハコテキの画像を描画
-	switch (enemy_number)
-	{
-	case 0:
-		DrawRotaGraphF(location.x, location.y, 0.6, radian, image, TRUE, flip_flag);
-		break;
-	default:
-		DrawRotaGraphF(location.x, location.y, 0.6, radian, image, TRUE, flip_flag);
-		break;
-	}
+	DrawRotaGraphF(location.x, location.y, 0.6, radian, image, TRUE, flip_flag);
 
 	__super::Draw();
 }

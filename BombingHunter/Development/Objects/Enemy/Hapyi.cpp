@@ -4,7 +4,7 @@
 #include"stdlib.h"
 
 //コンストラクタ
-Hapyi::Hapyi() : animation_count(0), direction(0.0f), enemy_number(NULL)
+Hapyi::Hapyi() : animation_count(0), direction(0.0f),ptn(GetRand(2))
 {
 	
 }
@@ -37,7 +37,18 @@ void Hapyi::Initialize()
 	//初期画像の設定
 	image = animation[0];
 	
-	location.y = 200;
+	switch (ptn)
+	{
+	case 1:
+		location.y = 140;
+		break;
+	case 2:
+		location.y = 230;
+		break;
+	default:
+		location.y = 320;
+		break;
+	}
 
 	enemy_score = -3000;
 	
@@ -45,11 +56,11 @@ void Hapyi::Initialize()
 	//生成時の移動方向
 	if (location.x <= 300.0f)
 	{
-		velocity.x = (rand() % 8) / 10.0f + 0.2f;
+		velocity.x = (rand() % 6) / 10.0f + 0.5f;
 	}
 	else
 	{
-		velocity.x = -((rand() % 8) / 10.0f + 0.2);
+		velocity.x = -((rand() % 6) / 10.0f + 0.5);
 	}
 
 	mode = 2;
@@ -82,15 +93,7 @@ void Hapyi::Draw() const
 	}
 
 	//ハコテキの画像を描画
-	switch (enemy_number)
-	{
-	case 0:
-		DrawRotaGraphF(location.x, location.y, 0.6, radian, image, TRUE, flip_flag);
-		break;
-	default:
-		DrawRotaGraphF(location.x, location.y, 0.6, radian, image, TRUE, flip_flag);
-		break;
-	}
+	DrawRotaGraphF(location.x, location.y, 0.6, radian, image, TRUE, flip_flag);
 
 	__super::Draw();
 }

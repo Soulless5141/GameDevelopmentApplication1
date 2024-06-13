@@ -4,7 +4,7 @@
 #include"stdlib.h"
 
 //コンストラクタ
-Haneteki::Haneteki() : animation_count(0), direction(0.0f), enemy_number(NULL)
+Haneteki::Haneteki() : animation_count(0), direction(0.0f),ptn(GetRand(2))
 {
 
 }
@@ -36,6 +36,19 @@ void Haneteki::Initialize()
 
 	//初期画像の設定
 	image = animation[0];
+
+	switch (ptn)
+	{
+	case 1:
+		location.y = 140;
+		break;
+	case 2:
+		location.y = 230;
+		break;
+	default:
+		location.y = 320;
+		break;
+	}
 	
 	enemy_score = 300;
 
@@ -78,16 +91,8 @@ void Haneteki::Draw() const
 		flip_flag = TRUE;
 	}
 
-	//ハコテキの画像を描画
-	switch (enemy_number)
-	{
-	case 0:
-		DrawRotaGraphF(location.x, location.y, 0.6, radian, image, TRUE, flip_flag);
-		break;
-	default:
-		DrawRotaGraphF(location.x, location.y, 0.6, radian, image, TRUE, flip_flag);
-		break;
-	}
+	//ハネテキの画像を描画
+	DrawRotaGraphF(location.x, location.y, 0.6, radian, image, TRUE, flip_flag);
 
 	__super::Draw();
 }

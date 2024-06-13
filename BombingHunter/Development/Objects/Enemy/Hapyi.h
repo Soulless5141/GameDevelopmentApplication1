@@ -4,9 +4,9 @@
 class Hapyi : public GameObject
 {
 private:
+	int ptn;
 	int animation[2];      //アニメーション画像
 	int animation_count;   //アニメーション時間
-	int enemy_number;
 	Vector2D direction;    //進行方向
 	//移動の速さ
 	Vector2D velocity = 0.0f;

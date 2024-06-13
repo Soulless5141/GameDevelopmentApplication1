@@ -4,7 +4,7 @@
 #include"stdlib.h"
 
 //コンストラクタ
-Daiya::Daiya() : animation_count(0), direction(0.0f), enemy_number(NULL)
+Daiya::Daiya() : animation_count(0), direction(0.0f)
 {
 
 }
@@ -40,9 +40,6 @@ void Daiya::Initialize()
 
 	//初期画像の設定
 	image = animation[0];
-
-	//いるか？
-	enemy_number = 100;
 	
 	//スコア設定
 	enemy_score = 7777;
@@ -50,11 +47,11 @@ void Daiya::Initialize()
 	//生成時の移動方向
 	if (location.x <= 300.0f)
 	{
-		velocity.x = GetRand(8) / 10.0f + 0.2f;
+		velocity.x = GetRand(7) / 10.0f + 0.3f;
 	}
 	else
 	{
-		velocity.x = -(GetRand(8) / 10.0f + 0.2);
+		velocity.x = -(GetRand(7) / 10.0f + 0.3);
 	}
 
 	mode = 2;
@@ -86,7 +83,7 @@ void Daiya::Draw() const
 		flip_flag = TRUE;
 	}
 
-	//ハコテキの画像を描画
+	//ダイアの画像を描画
 	DrawRotaGraphF(location.x, location.y, 0.6, radian, image, TRUE, flip_flag);
 
 	__super::Draw();

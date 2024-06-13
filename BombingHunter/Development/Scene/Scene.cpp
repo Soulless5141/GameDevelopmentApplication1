@@ -28,7 +28,7 @@ Scene::~Scene()
 void Scene::Initialize()
 {
 	//プレイヤーを生成する
-	CreateObject<Player>(Vector2D(320.0f, 60.0f));
+	CreateObject<Player>(Vector2D(320.0f, 50.0f));
 
 	background_image = LoadGraph("Resource/Imagezu/背景2.png");
 
@@ -47,9 +47,19 @@ void Scene::Initialize()
 		throw("Resource/Imagezu/to背景2.pngがないです。\n");
 	}
 
-	for (int i = 0; enemy_count[4]; i++)
+	for (int i = 0; enemy_count[3]; i++)
 	{
 		enemy_count[i] = 0;
+	}
+
+	if (GetRand(2) == 1)
+	{
+
+		CreateObject<Haneteki>(Vector2D(640.0f, 0.0f));
+	}
+	else
+	{
+		CreateObject<Haneteki>(Vector2D(0.0f, 0.0f));
 	}
 }
 
@@ -69,63 +79,63 @@ void Scene::Update()
 	}
 
 	//ハネテキ出現頻度
-	if (enemy_count[0] >= 500)
+	if (enemy_count[0] >= 200)
 	{
-		if (GetRand(2) == 1)
+		if (GetRand(1) == 1)
 		{
 
-			CreateObject<Haneteki>(Vector2D(640.0f, 380.0f));
+			CreateObject<Haneteki>(Vector2D(640.0f, 0.0f));
 		}
 		else
 		{
-			CreateObject<Haneteki>(Vector2D(0.0f, 381.0f));
+			CreateObject<Haneteki>(Vector2D(0.0f, 0.0f));
 		}
-		enemy_count[0] = GetRand(100);
+		enemy_count[0] = GetRand(150);
 	}
 
 	//ハコテキ出現頻度
-	if (enemy_count[1] >= 1500)
+	if (enemy_count[1] >= 1000)
 	{
-		if (GetRand(2) == 1)
+		if (GetRand(1) == 1)
 		{
-			CreateObject<Hakoteki>(Vector2D(640.0f, 380.0f));
+			CreateObject<Hakoteki>(Vector2D(640.0f, 390.0f));
 		}
 		else
 		{
-			CreateObject<Hakoteki>(Vector2D(0.0f, 381.0f));
+			CreateObject<Hakoteki>(Vector2D(0.0f, 391.0f));
 		}
-		enemy_count[1] = GetRand(600) + 300;
+		enemy_count[1] = GetRand(600) + 100;
 	}
 
 	//ダイア出現頻度
 	if (enemy_count[2] >= 2500)
 	{
-		if (GetRand(2) == 1)
+		if (GetRand(1) == 1)
 		{
 
-			CreateObject<Daiya>(Vector2D(640.0f, 380.0f));
+			CreateObject<Daiya>(Vector2D(640.0f, 400.0f));
 		}
 		else
 		{
-			CreateObject<Daiya>(Vector2D(0.0f, 381.0f));
+			CreateObject<Daiya>(Vector2D(0.0f, 400.0f));
 		}
 		enemy_count[2] = (GetRand(1000) + 700);
 	}
 
 
 	//ハーピィ出現頻度
-	if (enemy_count[3] >= 1000)
+	if (enemy_count[3] >= 1200)
 	{
-		if (GetRand(2) == 1)
+		if (GetRand(1) == 1)
 		{
 
-			CreateObject<Hapyi>(Vector2D(640.0f, 380.0f));
+			CreateObject<Hapyi>(Vector2D(640.0f, 0.0f));
 		}
 		else
 		{
-			CreateObject<Hapyi>(Vector2D(0.0f, 381.0f));
+			CreateObject<Hapyi>(Vector2D(0.0f, 0.0f));
 		}
-		enemy_count[3] = (GetRand(100) + 200);
+		enemy_count[3] = GetRand(200);
 	}
 
 	//オブジェクト同士の当たり判定チェック
@@ -153,7 +163,7 @@ void Scene::Update()
 	if (bom_set == FALSE)
 	{
 		cool_count++;
-		if (cool_count >= 0)
+		if (cool_count >= 70) //ボムのクールタイム
 		{
 			bom_set = TRUE;
 			cool_count = 0;

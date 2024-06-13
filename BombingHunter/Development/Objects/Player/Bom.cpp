@@ -51,7 +51,7 @@ void Bom::Initialize()
 	//爆発モーションに移っていいかの確認
 	next_flag = false;
 
-	direction = Vector2D(0.0, 1.0);
+	direction = Vector2D(0.0, 1.5);
 
 	enemy_score = 0;
 
