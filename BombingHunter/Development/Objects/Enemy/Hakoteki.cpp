@@ -102,7 +102,6 @@ void Hakoteki::Finalize()
 //“–‚½‚è”»’è’Ê’mˆ—
 void Hakoteki::OnHitCollision(GameObject* hit_object)
 {
-	GetScore();
 	//“–‚½‚Á‚½‚Ìˆ—
 	Finalize();
 }

@@ -7,12 +7,14 @@
 #include"../Objects/Enemy/Haneteki.h"
 #include"../Objects/Enemy/Daiya.h"
 #include"../Objects/Enemy/Hapyi.h"
+#include"../Objects/Enemy/Tama.h"
 #include"../Utility/InputControl.h"
 
 #define D_PIVOT_CENTER
 
 //コンストラクタ
-Scene::Scene() : objects(), background_image(NULL), sound(NULL),enemy_count(),bom_set(TRUE),cool_count(0),mode(NULL),score(0)
+Scene::Scene() : objects(), background_image(NULL), sound(NULL),
+enemy_count(),bom_set(TRUE),cool_count(0),mode(NULL),score(0),attack_flag(FALSE)
 {
 
 }
@@ -70,6 +72,20 @@ void Scene::Update()
 	for (GameObject* obj : objects)
 	{
 		obj->Update();
+	}
+
+	//if (mode == 3)
+	//{
+	//	//敵の弾生成判定チェック
+	//	CreateObject<Tama>(Vector2D(200.0f, 400.0f));
+	//}
+
+	for (int i = 0; i < objects.size(); i++)
+	{
+		if (mode == 3 && objects[i]->GetAttackFlag() == true)
+		{
+			CreateObject<Tama>(Vector2D(objects[i]->GetLocation()));
+		}
 	}
 
 	//時間経過で敵の生成
@@ -137,7 +153,7 @@ void Scene::Update()
 		}
 		enemy_count[3] = GetRand(200);
 	}
-
+	
 	//オブジェクト同士の当たり判定チェック
 	for (int i = 0; i < objects.size(); i++)
 	{

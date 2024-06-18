@@ -1,73 +1,54 @@
-#include "Haneteki.h"
+#include "Tama.h"
 #include"../../Utility/InputControl.h"
 #include"DxLib.h"
 #include"stdlib.h"
 
 //コンストラクタ
-Haneteki::Haneteki() : animation_count(0), direction(0.0f),ptn(GetRand(2))
+Tama::Tama() : animation_count(0), direction(0.0f)
 {
-	animation[0] = NULL;
-	animation[1] = NULL;
+
 }
 
 //デストラクタ
-Haneteki::~Haneteki()
+Tama::~Tama()
 {
 
 }
 
 //初期化処理
-void Haneteki::Initialize()
+void Tama::Initialize()
 {
 	//画像の読み込み
-	animation[0] = LoadGraph("Resource/Imagezu/1.png");//ハネテキ1
-	animation[1] = LoadGraph("Resource/Imagezu/2.png");//ハネテキ2
+	animation[0] = LoadGraph("Resource/Imagezu/eff1.png");//弾1
+	animation[1] = LoadGraph("Resource/Imagezu/eff2.png");//弾2
+	animation[2] = LoadGraph("Resource/Imagezu/eff3.png");//弾3
+	animation[3] = LoadGraph("Resource/Imagezu/eff4.png");//弾4
 
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1)
 	{
-		throw("ハネテキの画像がありません\n");
+		throw("弾の画像がありません\n");
 	}
 
 	//向きの設定
 	radian = 0.0;
 
 	//大きさの設定
-	box_size = 64.0;
+	box_size = 20.0;
 
 	//初期画像の設定
 	image = animation[0];
 
-	switch (ptn)
-	{
-	case 1:
-		location.y = 140;
-		break;
-	case 2:
-		location.y = 230;
-		break;
-	default:
-		location.y = 320;
-		break;
-	}
-	
-	enemy_score = 300;
+	enemy_score = -5;
 
 	//生成時の移動方向
-	if (location.x <= 300.0f)
-	{
-		velocity.x = (rand() % 8) / 10.0f + 0.2f;
-	}
-	else
-	{
-		velocity.x = -((rand() % 8) / 10.0f + 0.2);
-	}
+	velocity = 1;
 
-	mode = 2;
+	mode = 3;
 }
 
 //更新処理
-void Haneteki::Update()
+void Tama::Update()
 {
 	//移動処理
 	Movement();
@@ -77,29 +58,16 @@ void Haneteki::Update()
 }
 
 //描画処理
-void Haneteki::Draw() const
+void Tama::Draw() const
 {
-	//画面反転フラグ(FALSE=右　TURE=左)
-	int flip_flag = FALSE;
-
-	//進行方向によって、反転状態を決定する
-	if (velocity.x > 0.0f)
-	{
-		flip_flag = FALSE;
-	}
-	else
-	{
-		flip_flag = TRUE;
-	}
-
-	//ハネテキの画像を描画
-	DrawRotaGraphF(location.x, location.y, 0.6, radian, image, TRUE, flip_flag);
+	//ハコテキの画像を描画
+	DrawRotaGraph(location.x, location.y, 0.6, radian, image, TRUE);
 
 	__super::Draw();
 }
 
 //終了時処理
-void Haneteki::Finalize()
+void Tama::Finalize()
 {
 	box_size = 0;
 	direction = 0.0f;
@@ -112,14 +80,15 @@ void Haneteki::Finalize()
 }
 
 //当たり判定通知処理
-void Haneteki::OnHitCollision(GameObject* hit_object)
+void Tama::OnHitCollision(GameObject* hit_object)
 {
+	//GetScore();
 	//当たった時の処理
 	Finalize();
 }
 
 //移動処理
-void Haneteki::Movement()
+void Tama::Movement()
 {
 	//現在の位置座標に速さを加算する
 	location += velocity;
@@ -132,7 +101,7 @@ void Haneteki::Movement()
 }
 
 //アニメーション制御
-void Haneteki::AnimeControl()
+void Tama::AnimeControl()
 {
 	//フレームカウントを加算する
 	animation_count++;

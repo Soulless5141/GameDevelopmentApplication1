@@ -6,10 +6,10 @@
 //コンストラクタ
 Bom::Bom() : animation_count(0), bom_count(0),next_flag(false)
 {
-	animation[0] = NULL;
-	animation[1] = NULL;
-	animation[2] = NULL;
-	animation[3] = NULL;
+	for (int i = 0; i < 4; i++)
+	{
+		animation[i] = NULL;
+	}
 }
 
 //デストラクタ

@@ -114,7 +114,6 @@ void Hapyi::Finalize()
 //“–‚½‚è”»’è’Ê’mˆ—
 void Hapyi::OnHitCollision(GameObject* hit_object)
 {
-	GetScore();
 	//“–‚½‚Á‚½‚Ìˆ—
 	Finalize();
 }

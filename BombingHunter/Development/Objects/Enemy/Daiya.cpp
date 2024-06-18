@@ -102,12 +102,13 @@ void Daiya::Finalize()
 		DeleteGraph(animation[i]);
 	}
 	DeleteGraph(image);
+
+
 }
 
 //“–‚½‚è”»’è’Ê’mˆ—
 void Daiya::OnHitCollision(GameObject* hit_object)
 {
-	GetScore();
 	//“–‚½‚Á‚½‚Ìˆ—
 	Finalize();
 }

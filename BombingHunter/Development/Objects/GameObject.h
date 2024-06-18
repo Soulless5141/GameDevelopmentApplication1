@@ -18,6 +18,7 @@ protected:
 	int delete_flag;
 	int now_score;
 	int enemy_score;
+	int attack_flag;
 
 public:
 	GameObject();
@@ -40,7 +41,8 @@ public:
 	Vector2D GetBoxSize() const;
 
 	int GetMode();
-	int DeleteFlag();
+	bool DeleteFlag();
 	int GetScore();
+	int GetAttackFlag();
 };
 

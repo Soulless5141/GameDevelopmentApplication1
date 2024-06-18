@@ -12,7 +12,8 @@ GameObject::GameObject() :
 	mode(0),
 	delete_flag(false),
 	now_score(),
-	enemy_score()
+	enemy_score(),
+	attack_flag(false)
 {
 
 }
@@ -88,7 +89,7 @@ int GameObject::GetMode()
 	return this->mode;
 }
 
-int GameObject::DeleteFlag()
+bool GameObject::DeleteFlag()
 {
 	return delete_flag;
 }
@@ -96,4 +97,9 @@ int GameObject::DeleteFlag()
 int GameObject::GetScore()
 {
 	return enemy_score;
+}
+
+int GameObject::GetAttackFlag()
+{
+	return attack_flag;
 }

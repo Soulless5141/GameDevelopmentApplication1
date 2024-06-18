@@ -13,6 +13,7 @@ private:
 	int cool_count;
 	int mode;
 	int score;
+	int attack_flag;
 
 	std::vector<GameObject*>objects;
 
