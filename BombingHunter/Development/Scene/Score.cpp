@@ -28,6 +28,7 @@ void Score::Initialize()
 
 	score = 0;
 
+	omote[0] = image[0];
 }
 
 void Score::Update()
@@ -40,14 +41,16 @@ void Score::Update()
 void Score::Draw() const
 {
 	int j = 9;
-	DrawRotaGraph(50, 460, 1.3, 0, image[10], FALSE);//スコア
-	/*DrawFormatString(130, 450, GetColor(255, 255, 255), "%d", score);*/
+	int k = 0;
 
-	for (int i = 0; i < omote[9]; i++)
+	DrawRotaGraph(50, 460, 1.3, 0, image[10], TRUE);//スコア
+
+	for (int i = 0; i < 10; i++)
 	{
 		if (omote[j] != NULL)
 		{
-			DrawRotaGraph(j * 20, 460, 1.3, 0, omote[j], FALSE);
+			DrawRotaGraph(100 + (k * 20), 460, 0.1, 0, omote[j], TRUE);
+			k++;
 		}
 		j--;
 	}
@@ -79,20 +82,10 @@ void Score::ChangeFont()
 		j = j * 10;
 		k++;
 	}
-
-	/*while (score == 0)
+	if (omote[0] == NULL)
 	{
-		value = score % i;
-		value /= j;
-		omote[i] = image[value];
-		score -= score % i;
-		j * 10;
-	}*/
-
-	/*for (int i = 0; i < 10; i++)
-	{
-		omote[i] = image[i];
+		omote[0] = image[0];
 	}
-}*/
+
 }
 
