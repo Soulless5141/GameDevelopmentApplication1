@@ -22,10 +22,10 @@ Bom::~Bom()
 void Bom::Initialize()
 {
 	//画像の読み込み
-	animation[0] = LoadGraph("Resource/Imagezu/爆弾.png");
-	animation[1] = LoadGraph("Resource/Imagezu/baku1.png");
-	animation[2] = LoadGraph("Resource/Imagezu/baku2.png");
-	animation[3] = LoadGraph("Resource/Imagezu/baku3.png");
+	animation[0] = LoadGraph("Resource/Images/Bomb/Bomb.png");
+	animation[1] = LoadGraph("Resource/Images/Blast/1.png");
+	animation[2] = LoadGraph("Resource/Images/Blast/2.png");
+	animation[3] = LoadGraph("Resource/Images/Blast/3/png");
 
 	//エラーチェック
 	if (animation[0] == -1)
@@ -78,8 +78,8 @@ void Bom::Draw() const
 //終了時処理
 void Bom::Finalize()
 {
-	box_size = 0;
-	location = 0;
+	/*box_size = 0;
+	location = 0;*/
 	delete_flag = true;
 	//使用した画像を開放する
 	DeleteGraph(image);
@@ -90,8 +90,10 @@ void Bom::OnHitCollision(GameObject* hit_object)
 {
 	//当たった時の処理
 	next_flag = true;
+	box_size = 0;
 	direction = 0.0f;
 	Vector2D velocity = 0.0f;
+	direction = Vector2D(0.0, 0.0);
 }
 
 //移動処理
@@ -139,7 +141,3 @@ void Bom::AnimeControl()
 }
 	
 
-//void Bom::Func(Vector2D player)
-//{
-//	player = 0;
-//}

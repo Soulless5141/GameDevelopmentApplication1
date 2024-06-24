@@ -4,7 +4,7 @@
 #include"stdlib.h"
 
 //コンストラクタ
-Haneteki::Haneteki() : animation_count(0), direction(0.0f),ptn(GetRand(2))
+Haneteki::Haneteki() : animation_count(0), direction(0.0f),ptn(GetRand(2)),attack_time(0)
 {
 	animation[0] = NULL;
 	animation[1] = NULL;
@@ -20,8 +20,8 @@ Haneteki::~Haneteki()
 void Haneteki::Initialize()
 {
 	//画像の読み込み
-	animation[0] = LoadGraph("Resource/Imagezu/1.png");//ハネテキ1
-	animation[1] = LoadGraph("Resource/Imagezu/2.png");//ハネテキ2
+	animation[0] = LoadGraph("Resource/Images/WingEnemy/1.png");//ハネテキ1
+	animation[1] = LoadGraph("Resource/Images/WingEnemy/2.png");//ハネテキ2
 
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1)
@@ -38,6 +38,7 @@ void Haneteki::Initialize()
 	//初期画像の設定
 	image = animation[0];
 
+	//Y座標ランダム生成
 	switch (ptn)
 	{
 	case 1:
@@ -51,6 +52,7 @@ void Haneteki::Initialize()
 		break;
 	}
 	
+	//スコア設定
 	enemy_score = 300;
 
 	//生成時の移動方向
@@ -63,16 +65,24 @@ void Haneteki::Initialize()
 		velocity.x = -((rand() % 8) / 10.0f + 0.2);
 	}
 
+	//敵の種類設定
 	mode = 2;
 }
 
 //更新処理
 void Haneteki::Update()
 {
+	//攻撃フラグ解除
+	if (attack_flag == true)
+	{
+		attack_flag = false;
+	}
 	//移動処理
 	Movement();
 	//アニメーション制御
 	AnimeControl();
+	//攻撃判定制御
+	AttackControl();
 
 }
 
@@ -124,7 +134,7 @@ void Haneteki::Movement()
 	//現在の位置座標に速さを加算する
 	location += velocity;
 
-	//
+	//はじまで行くと削除
 	if (location.x < -20 || location.x > 660)
 	{
 		Finalize();
@@ -152,5 +162,18 @@ void Haneteki::AnimeControl()
 		{
 			image = animation[0];
 		}
+	}
+}
+
+void Haneteki::AttackControl()
+{
+	//一定時間間隔で攻撃
+	attack_time++;
+
+	if (attack_time >= 200)
+	{
+		//カウントリセット
+		attack_time = 0;
+		attack_flag = true;
 	}
 }

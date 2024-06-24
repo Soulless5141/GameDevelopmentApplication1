@@ -19,11 +19,11 @@ Daiya::~Daiya()
 void Daiya::Initialize()
 {
 	//画像の読み込み
-	animation[0] = LoadGraph("Resource/Imagezu/daia1.png");//ダイア1
-	animation[1] = LoadGraph("Resource/Imagezu/daia2.png");//ダイア2
-	animation[2] = LoadGraph("Resource/Imagezu/daia3.png");//ダイア3
-	animation[3] = LoadGraph("Resource/Imagezu/daia4.png");//ダイア4
-	animation[4] = LoadGraph("Resource/Imagezu/daia5.png");//ダイア5
+	animation[0] = LoadGraph("Resource/Images/GoldEnemy/1.png");//ダイア1
+	animation[1] = LoadGraph("Resource/Images/GoldEnemy/2.png");//ダイア2
+	animation[2] = LoadGraph("Resource/Images/GoldEnemy/3.png");//ダイア3
+	animation[3] = LoadGraph("Resource/Images/GoldEnemy/4.png");//ダイア4
+	animation[4] = LoadGraph("Resource/Images/GoldEnemy/5.png");//ダイア5
 
 
 	//エラーチェック

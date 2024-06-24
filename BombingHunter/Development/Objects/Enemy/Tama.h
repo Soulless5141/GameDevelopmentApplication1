@@ -4,9 +4,9 @@
 class Tama : public GameObject
 {
 private:
-	int ptn;
 	int animation[4];      //アニメーション画像
 	int animation_count;   //アニメーション時間
+	int next_flag;
 	Vector2D direction;    //進行方向
 	//移動の速さ
 	Vector2D velocity = 0.0f;

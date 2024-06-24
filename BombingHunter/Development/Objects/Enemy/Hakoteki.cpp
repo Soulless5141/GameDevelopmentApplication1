@@ -20,8 +20,8 @@ Hakoteki::~Hakoteki()
 void Hakoteki::Initialize()
 {
 	//画像の読み込み
-	animation[0] = LoadGraph("Resource/Imagezu/1 (1).png");//ハコテキ1
-	animation[1] = LoadGraph("Resource/Imagezu/2 (1).png");//ハコテキ2
+	animation[0] = LoadGraph("Resource/Images/BoxEnemy/1.png");//ハコテキ1
+	animation[1] = LoadGraph("Resource/Images/BoxEnemy/2.png");//ハコテキ2
 
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1)

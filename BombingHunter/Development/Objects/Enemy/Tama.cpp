@@ -4,9 +4,12 @@
 #include"stdlib.h"
 
 //コンストラクタ
-Tama::Tama() : animation_count(0), direction(0.0f)
+Tama::Tama() : animation_count(0), direction(0.0f),next_flag(false)
 {
-
+	for (int i = 0; i <= 3 ; i++)
+	{
+		animation[i] = NULL;
+	}
 }
 
 //デストラクタ
@@ -19,10 +22,10 @@ Tama::~Tama()
 void Tama::Initialize()
 {
 	//画像の読み込み
-	animation[0] = LoadGraph("Resource/Imagezu/eff1.png");//弾1
-	animation[1] = LoadGraph("Resource/Imagezu/eff2.png");//弾2
-	animation[2] = LoadGraph("Resource/Imagezu/eff3.png");//弾3
-	animation[3] = LoadGraph("Resource/Imagezu/eff4.png");//弾4
+	animation[0] = LoadGraph("Resource/Images/EnemyBullet/1.png");//弾1
+	animation[1] = LoadGraph("Resource/Images/EnemyBullet/eff1.png");//弾2
+	animation[2] = LoadGraph("Resource/Images/EnemyBullet/eff2.png");//弾3
+	animation[3] = LoadGraph("Resource/Images/EnemyBullet/eff3.png");//弾4
 
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1)
@@ -39,10 +42,10 @@ void Tama::Initialize()
 	//初期画像の設定
 	image = animation[0];
 
-	enemy_score = -5;
+	//enemy_score = -5;
 
 	//生成時の移動方向
-	velocity = 1;
+	velocity.y = -1;
 
 	mode = 3;
 }
@@ -82,9 +85,12 @@ void Tama::Finalize()
 //当たり判定通知処理
 void Tama::OnHitCollision(GameObject* hit_object)
 {
-	//GetScore();
 	//当たった時の処理
-	Finalize();
+	next_flag = true;
+	box_size = 0;
+	direction = 0.0f;
+	velocity.y = 0.0f;
+	direction = Vector2D(0.0, 0.0);
 }
 
 //移動処理
@@ -103,23 +109,30 @@ void Tama::Movement()
 //アニメーション制御
 void Tama::AnimeControl()
 {
-	//フレームカウントを加算する
-	animation_count++;
-
-	//60フレーム目に到達したら
-	if (animation_count >= 30)
+	//画像の切り替え
+	if (next_flag == true)
 	{
-		//カウントリセット
-		animation_count = 0;
-
-		//画像の切り替え
+		animation_count++;
 		if (image == animation[0])
 		{
+			box_size = 0;
+			radian = 0;
 			image = animation[1];
+			animation_count = 0;
 		}
-		else if (image == animation[1])
+		else if (animation_count >= 10 && image == animation[1])
 		{
-			image = animation[0];
+			image = animation[2];
+			animation_count = 0;
+		}
+		else if (animation_count >= 10 && image == animation[2])
+		{
+			image = animation[3];
+			animation_count = 0;
+		}
+		else if (animation_count >= 10 && image == animation[3])
+		{
+			Finalize();
 		}
 	}
 }

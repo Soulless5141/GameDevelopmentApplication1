@@ -1,6 +1,5 @@
 #include "Scene.h"
 #include"DxLib.h"
-#include"stdlib.h"
 #include"../Objects/Player/Player.h"
 #include"../Objects/Player/Bom.h"
 #include"../Objects/Enemy/Hakoteki.h"
@@ -14,7 +13,7 @@
 
 //コンストラクタ
 Scene::Scene() : objects(), background_image(NULL), sound(NULL),
-enemy_count(),bom_set(TRUE),cool_count(0),mode(NULL),score(0),attack_flag(FALSE)
+enemy_count(),bom_set(TRUE),cool_count(0),mode(NULL),score(0),attack_flag(FALSE), score_class(nullptr)
 {
 
 }
@@ -32,9 +31,9 @@ void Scene::Initialize()
 	//プレイヤーを生成する
 	CreateObject<Player>(Vector2D(320.0f, 50.0f));
 
-	background_image = LoadGraph("Resource/Imagezu/背景2.png");
+	background_image = LoadGraph("Resource/Images/BackGround.png");
 
-	sound = LoadSoundMem("Resource/Imagezu/BGM_arrows.wav");
+	sound = LoadSoundMem("Resource/Sounds/Evaluation/BGM_arrows.wav");
 
 	if (sound == -1)
 	{
@@ -63,6 +62,9 @@ void Scene::Initialize()
 	{
 		CreateObject<Haneteki>(Vector2D(0.0f, 0.0f));
 	}
+
+	score_class = new Score(this);
+	score_class->Initialize();
 }
 
 //更新処理
@@ -74,15 +76,9 @@ void Scene::Update()
 		obj->Update();
 	}
 
-	//if (mode == 3)
-	//{
-	//	//敵の弾生成判定チェック
-	//	CreateObject<Tama>(Vector2D(200.0f, 400.0f));
-	//}
-
 	for (int i = 0; i < objects.size(); i++)
 	{
-		if (mode == 3 && objects[i]->GetAttackFlag() == true)
+		if (objects[i]->GetMode() == 2 && objects[i]->GetAttackFlag() == true)
 		{
 			CreateObject<Tama>(Vector2D(objects[i]->GetLocation()));
 		}
@@ -167,7 +163,6 @@ void Scene::Update()
 	//zキーを押したら、ボムを生成する
 	if (InputControl::GetKeyDown(KEY_INPUT_Z) && bom_set == TRUE)
 	{
-		//CreateObject<Bom>(Vector2D())->Func();
 		CreateObject<Bom>(objects[0]->GetLocation());
 		bom_set = FALSE;
 	}
@@ -193,6 +188,8 @@ void Scene::Update()
 			objects.erase(objects.begin() + i);
 		}
 	}
+
+	score_class->Update();
 }
 
 //描画処理
@@ -207,7 +204,7 @@ void Scene::Draw() const
 		obj->Draw();
 	}
 
-	DrawFormatString(20, 450, GetColor(255, 255, 255), "Score %d", score);
+	score_class->Draw();
 }
 
 //終了時処理
@@ -233,6 +230,12 @@ void Scene::Finalize()
 	//動的配列の解放
 	objects.clear();
 
+	delete score_class;
+}
+
+int Scene::GetScore()
+{
+	return score;
 }
 
 #ifdef D_PIVOT_CENTER
@@ -241,10 +244,11 @@ void Scene::Finalize()
 void Scene::HitCheckObject(GameObject* a, GameObject* b)
 {
 	int fr, gt;
-	fr = a->GetMode();
+	fr = a->GetMode(); //0;プレイヤー  1;ボム  2;テキ  3;敵の弾
 	gt = b->GetMode();
 
-	if ((fr != gt) && (fr != 0 && gt != 0) )
+	//敵とボムがぶつかったらの処理
+	if ((fr != gt) && (fr != 0 && gt != 0) && (fr != 3 && gt != 3))
 	{
 		//2つのオブジェクトの距離を取得
 		Vector2D diff = a->GetLocation() - b->GetLocation();
@@ -258,6 +262,8 @@ void Scene::HitCheckObject(GameObject* a, GameObject* b)
 			//当たったことをオブジェクトに通知する
 			a->OnHitCollision(b);
 			b->OnHitCollision(a);
+
+			//スコア加算処理
 			if (fr == 2)
 			{
 				score += a->GetScore();
@@ -270,6 +276,23 @@ void Scene::HitCheckObject(GameObject* a, GameObject* b)
 			{
 				score = 0;
 			}
+		}
+	}
+	//敵の弾とプレイヤー
+	else if (fr == 0 && gt == 3)
+	{
+		//2つのオブジェクトの距離を取得
+		Vector2D diff = a->GetLocation() - b->GetLocation();
+
+		//2つのオブジェクトの当たり判定の大きさを取得
+		Vector2D box_size = (a->GetBoxSize() + b->GetBoxSize());
+
+		//距離より大きさが大きい場合、Hit判定とする
+		if ((fabsf(diff.x) < box_size.x) && (fabsf(diff.y) < box_size.y))
+		{
+			//当たったことをオブジェクトに通知する
+			a->OnHitCollision(b);
+			b->OnHitCollision(a);
 		}
 	}
 }

@@ -86,7 +86,7 @@ Vector2D GameObject::GetBoxSize() const
 
 int GameObject::GetMode()
 {
-	return this->mode;
+	return mode;
 }
 
 bool GameObject::DeleteFlag()
@@ -99,7 +99,7 @@ int GameObject::GetScore()
 	return enemy_score;
 }
 
-int GameObject::GetAttackFlag()
+bool GameObject::GetAttackFlag()
 {
 	return attack_flag;
 }

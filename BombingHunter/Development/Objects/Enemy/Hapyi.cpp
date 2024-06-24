@@ -19,8 +19,8 @@ Hapyi::~Hapyi()
 void Hapyi::Initialize()
 {
 	//画像の読み込み
-	animation[0] = LoadGraph("Resource/Imagezu/1 (2).png");//ハーピィ1
-	animation[1] = LoadGraph("Resource/Imagezu/2 (2).png");//ハーピィ1
+	animation[0] = LoadGraph("Resource/Images/Harpy/1.png");//ハーピィ1
+	animation[1] = LoadGraph("Resource/Images/Harpy/2.png");//ハーピィ1
 
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1)

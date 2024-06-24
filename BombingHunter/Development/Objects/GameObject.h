@@ -43,6 +43,6 @@ public:
 	int GetMode();
 	bool DeleteFlag();
 	int GetScore();
-	int GetAttackFlag();
+	bool GetAttackFlag();
 };
 

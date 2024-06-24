@@ -26,7 +26,6 @@ public:
 	//“–‚½‚è”»’è’Ê’mˆ—
 	virtual void OnHitCollision(GameObject* hit_object) override;
 
-	void Func(Vector2D player);
 private:
 	//ˆÚ“®ˆ—
 	void Movement();

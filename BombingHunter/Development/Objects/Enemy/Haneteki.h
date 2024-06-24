@@ -7,6 +7,7 @@ private:
 	int ptn;
 	int animation[2];      //アニメーション画像
 	int animation_count;   //アニメーション時間
+	int attack_time;
 	Vector2D direction;    //進行方向
 	//移動の速さ
 	Vector2D velocity = 0.0f;
@@ -28,5 +29,7 @@ private:
 	void Movement();
 	//アニメーション制御
 	void AnimeControl();
+
+	void AttackControl();
 };
 

@@ -3,6 +3,8 @@
 #include<vector>
 #include<string>
 #include"../Objects/GameObject.h"
+#include "Score.h"
+
 class Scene
 {
 private:
@@ -16,6 +18,7 @@ private:
 	int attack_flag;
 
 	std::vector<GameObject*>objects;
+	Score* score_class;
 
 public:
 	Scene();
@@ -25,6 +28,8 @@ public:
 	void Update();      //更新処理
 	void Draw() const;  //描画処理
 	void Finalize();    //終了処理
+
+	int GetScore();
 
 private:
 	//当たり判定チェック処理
