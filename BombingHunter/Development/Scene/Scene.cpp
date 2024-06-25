@@ -80,6 +80,9 @@ void Scene::Update()
 	{
 		if (objects[i]->GetMode() == 2 && objects[i]->GetAttackFlag() == true)
 		{
+			Vector2D p = objects[0]->GetLocation();
+			Vector2D t = objects[i]->GetLocation();
+
 			CreateObject<Tama>(Vector2D(objects[i]->GetLocation()));
 		}
 	}

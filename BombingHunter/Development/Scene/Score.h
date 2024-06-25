@@ -4,13 +4,16 @@ class Score
 {
 private:
 	class Scene* owner_scene;
-	int image[11];
-	int omote[10];
+	class Time* owner_time;
+	int image[13];
+	int s_omote[10];
+	int t_omote[3];
 	int score;
 	int value;
 
 public:
 	Score(class Scene* owner);
+	Score(class Time* time);
 	~Score();
 
 	void Initialize();  //‰Šú‰»ˆ—

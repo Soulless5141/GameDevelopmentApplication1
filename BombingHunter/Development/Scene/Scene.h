@@ -4,6 +4,7 @@
 #include<string>
 #include"../Objects/GameObject.h"
 #include "Score.h"
+#include "Score.h"
 
 class Scene
 {
@@ -30,6 +31,8 @@ public:
 	void Finalize();    //終了処理
 
 	int GetScore();
+
+	Vector2D GetVelocity();
 
 private:
 	//当たり判定チェック処理

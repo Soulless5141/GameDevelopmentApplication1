@@ -1,6 +1,7 @@
 #pragma once
 
 #include"../GameObject.h"
+#include"../Enemy/Tama.h"
 
 class Player : public GameObject
 {
@@ -8,6 +9,8 @@ private:
 	int animation[2];      //アニメーション画像
 	int animation_count;   //アニメーション変更時間
 	int filp_flag;         //反転フラグ
+
+	Tama* tama_class;
 
 public:
 	Player();

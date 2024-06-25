@@ -142,6 +142,7 @@
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Objects\Enemy\Tama.cpp" />
     <ClCompile Include="Scene\Score.cpp" />
+    <ClCompile Include="Scene\Time.cpp" />
     <ClCompile Include="Utility\InputControl.cpp" />
     <ClCompile Include="Utility\Vector2D.cpp" />
   </ItemGroup>
@@ -156,6 +157,7 @@
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="Objects\Enemy\Tama.h" />
     <ClInclude Include="Scene\Score.h" />
+    <ClInclude Include="Scene\Time.h" />
     <ClInclude Include="Utility\InputControl.h" />
     <ClInclude Include="Utility\Vector2D.h" />
   </ItemGroup>

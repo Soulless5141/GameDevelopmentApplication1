@@ -4,6 +4,7 @@
 class Tama : public GameObject
 {
 private:
+	int p_location;
 	int animation[4];      //アニメーション画像
 	int animation_count;   //アニメーション時間
 	int next_flag;

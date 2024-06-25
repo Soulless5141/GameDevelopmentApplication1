@@ -2,6 +2,7 @@
 #include"../../Utility/InputControl.h"
 #include"DxLib.h"
 #include"stdlib.h"
+#include "../Player/Player.h"
 
 //コンストラクタ
 Tama::Tama() : animation_count(0), direction(0.0f),next_flag(false)
@@ -41,8 +42,6 @@ void Tama::Initialize()
 
 	//初期画像の設定
 	image = animation[0];
-
-	//enemy_score = -5;
 
 	//生成時の移動方向
 	velocity.y = -1;
@@ -100,7 +99,7 @@ void Tama::Movement()
 	location += velocity;
 
 	//
-	if (location.x < -20 || location.x > 660)
+	if (location.y < -10)
 	{
 		Finalize();
 	}

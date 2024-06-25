@@ -79,26 +79,31 @@ void GameObject::SetLocation(const Vector2D& location)
 	this->location = location;
 }
 
+//敵の大きさ取得処理
 Vector2D GameObject::GetBoxSize() const
 {
 	return box_size;
 }
 
+//オブジェクトの種類取得処理
 int GameObject::GetMode()
 {
 	return mode;
 }
 
+//削除フラグ処理
 bool GameObject::DeleteFlag()
 {
 	return delete_flag;
 }
 
+//倒した敵のスコア取得処理
 int GameObject::GetScore()
 {
 	return enemy_score;
 }
 
+//敵の攻撃判定処理
 bool GameObject::GetAttackFlag()
 {
 	return attack_flag;
