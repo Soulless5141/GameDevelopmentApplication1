@@ -53,7 +53,7 @@ void Haneteki::Initialize()
 	}
 	
 	//ƒXƒRƒAİ’è
-	enemy_score = 300;
+	enemy_score = 800;
 
 	//¶¬‚ÌˆÚ“®•ûŒü
 	if (location.x <= 300.0f)

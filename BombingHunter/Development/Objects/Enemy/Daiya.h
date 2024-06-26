@@ -7,8 +7,6 @@ private:
 	int animation[5];      //アニメーション画像
 	int animation_count;   //アニメーション時間
 	Vector2D direction;    //進行方向
-	//移動の速さ
-	Vector2D velocity = 0.0f;
 
 public:
 	Daiya();

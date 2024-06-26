@@ -9,8 +9,6 @@ private:
 	int animation_count;   //アニメーション時間
 	int next_flag;
 	Vector2D direction;    //進行方向
-	//移動の速さ
-	Vector2D velocity = 0.0f;
 
 public:
 	Tama();
@@ -23,6 +21,8 @@ public:
 
 	//当たり判定通知処理
 	virtual void OnHitCollision(GameObject* hit_object) override;
+
+	
 
 private:
 	//移動処理

@@ -39,7 +39,7 @@ void Hakoteki::Initialize()
 	image = animation[0];
 
 	//ƒXƒRƒAİ’è
-	enemy_score = 1000;
+	enemy_score = 3000;
 
 	//¶¬‚ÌˆÚ“®•ûŒü
 	if (location.x <= 300.0f)

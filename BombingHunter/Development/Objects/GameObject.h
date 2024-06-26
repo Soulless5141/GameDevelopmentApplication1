@@ -19,6 +19,8 @@ protected:
 	int now_score;
 	int enemy_score;
 	int attack_flag;
+	//ˆÚ“®‚Ì‘¬‚³
+	Vector2D velocity = 0.0f;
 
 public:
 	GameObject();
@@ -44,5 +46,7 @@ public:
 	bool DeleteFlag();
 	int GetScore();
 	bool GetAttackFlag();
+
+	void GetVelocity(const Vector2D& velocity);
 };
 

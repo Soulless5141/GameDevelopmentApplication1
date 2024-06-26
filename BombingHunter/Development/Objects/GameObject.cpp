@@ -108,3 +108,8 @@ bool GameObject::GetAttackFlag()
 {
 	return attack_flag;
 }
+
+void GameObject::GetVelocity(const Vector2D& velocity)
+{
+	this->velocity = velocity;
+}

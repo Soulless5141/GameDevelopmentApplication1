@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include "math.h"
 #include"DxLib.h"
 #include"../Objects/Player/Player.h"
 #include"../Objects/Player/Bom.h"
@@ -12,8 +13,8 @@
 #define D_PIVOT_CENTER
 
 //コンストラクタ
-Scene::Scene() : objects(), background_image(NULL), sound(NULL),
-enemy_count(),bom_set(TRUE),cool_count(0),mode(NULL),score(0),attack_flag(FALSE), score_class(nullptr)
+Scene::Scene() : objects(), background_image(NULL), sound(NULL),enemy_count(),
+bom_set(TRUE),cool_count(0),mode(NULL),score(0),attack_flag(FALSE), score_class(nullptr)
 {
 
 }
@@ -29,7 +30,7 @@ Scene::~Scene()
 void Scene::Initialize()
 {
 	//プレイヤーを生成する
-	CreateObject<Player>(Vector2D(320.0f, 50.0f));
+	CreateObject<Player>(Vector2D(320.0f, 50.0f), 0.0);
 
 	background_image = LoadGraph("Resource/Images/BackGround.png");
 
@@ -56,11 +57,11 @@ void Scene::Initialize()
 	if (GetRand(2) == 1)
 	{
 
-		CreateObject<Haneteki>(Vector2D(640.0f, 0.0f));
+		CreateObject<Haneteki>(Vector2D(640.0f, 0.0f),0.0);
 	}
 	else
 	{
-		CreateObject<Haneteki>(Vector2D(0.0f, 0.0f));
+		CreateObject<Haneteki>(Vector2D(0.0f, 0.0f),0.0);
 	}
 
 	score_class = new Score(this);
@@ -83,7 +84,13 @@ void Scene::Update()
 			Vector2D p = objects[0]->GetLocation();
 			Vector2D t = objects[i]->GetLocation();
 
-			CreateObject<Tama>(Vector2D(objects[i]->GetLocation()));
+
+			Vector2D l = Vector2D(p.x - t.x, p.y - t.y);
+
+			int z = sqrt((l.x * l.x) + (l.y * l.y));
+
+			CreateObject<Tama>(Vector2D(objects[i]->GetLocation()), l / z);
+			
 		}
 	}
 
@@ -99,11 +106,11 @@ void Scene::Update()
 		if (GetRand(1) == 1)
 		{
 
-			CreateObject<Haneteki>(Vector2D(640.0f, 0.0f));
+			CreateObject<Haneteki>(Vector2D(640.0f, 0.0f), 0.0);
 		}
 		else
 		{
-			CreateObject<Haneteki>(Vector2D(0.0f, 0.0f));
+			CreateObject<Haneteki>(Vector2D(0.0f, 0.0f), 0.0);
 		}
 		enemy_count[0] = GetRand(150);
 	}
@@ -113,11 +120,11 @@ void Scene::Update()
 	{
 		if (GetRand(1) == 1)
 		{
-			CreateObject<Hakoteki>(Vector2D(640.0f, 390.0f));
+			CreateObject<Hakoteki>(Vector2D(640.0f, 390.0f), 0.0);
 		}
 		else
 		{
-			CreateObject<Hakoteki>(Vector2D(0.0f, 391.0f));
+			CreateObject<Hakoteki>(Vector2D(0.0f, 391.0f), 0.0);
 		}
 		enemy_count[1] = GetRand(600) + 100;
 	}
@@ -128,11 +135,11 @@ void Scene::Update()
 		if (GetRand(1) == 1)
 		{
 
-			CreateObject<Daiya>(Vector2D(640.0f, 400.0f));
+			CreateObject<Daiya>(Vector2D(640.0f, 400.0f), 0.0);
 		}
 		else
 		{
-			CreateObject<Daiya>(Vector2D(0.0f, 400.0f));
+			CreateObject<Daiya>(Vector2D(0.0f, 400.0f), 0.0);
 		}
 		enemy_count[2] = (GetRand(1000) + 700);
 	}
@@ -144,11 +151,11 @@ void Scene::Update()
 		if (GetRand(1) == 1)
 		{
 
-			CreateObject<Hapyi>(Vector2D(640.0f, 0.0f));
+			CreateObject<Hapyi>(Vector2D(640.0f, 0.0f), 0.0);
 		}
 		else
 		{
-			CreateObject<Hapyi>(Vector2D(0.0f, 0.0f));
+			CreateObject<Hapyi>(Vector2D(0.0f, 0.0f), 0.0);
 		}
 		enemy_count[3] = GetRand(200);
 	}
@@ -166,13 +173,15 @@ void Scene::Update()
 	//zキーを押したら、ボムを生成する
 	if (InputControl::GetKeyDown(KEY_INPUT_Z) && bom_set == TRUE)
 	{
-		CreateObject<Bom>(objects[0]->GetLocation());
+		CreateObject<Bom>(objects[0]->GetLocation(), 0.0);
 		bom_set = FALSE;
 	}
 	if (InputControl::GetKey(KEY_INPUT_X))
 	{
-		CreateObject<Bom>(objects[0]->GetLocation());
+		CreateObject<Bom>(objects[0]->GetLocation(), 0.0);
 	}
+
+	
 
 	if (bom_set == FALSE)
 	{
@@ -208,7 +217,9 @@ void Scene::Draw() const
 	}
 
 	score_class->Draw();
+
 }
+
 
 //終了時処理
 void Scene::Finalize()
@@ -296,6 +307,7 @@ void Scene::HitCheckObject(GameObject* a, GameObject* b)
 			//当たったことをオブジェクトに通知する
 			a->OnHitCollision(b);
 			b->OnHitCollision(a);
+			score_class->DamegeFlag();
 		}
 	}
 }

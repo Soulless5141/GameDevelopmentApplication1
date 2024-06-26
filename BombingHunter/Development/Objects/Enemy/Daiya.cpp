@@ -42,7 +42,7 @@ void Daiya::Initialize()
 	image = animation[0];
 	
 	//ƒXƒRƒAİ’è
-	enemy_score = 7777;
+	enemy_score = 77777;
 
 	//¶¬‚ÌˆÚ“®•ûŒü
 	if (location.x <= 300.0f)

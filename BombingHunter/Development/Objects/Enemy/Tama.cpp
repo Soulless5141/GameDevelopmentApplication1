@@ -38,13 +38,10 @@ void Tama::Initialize()
 	radian = 0.0;
 
 	//‘å‚«‚³‚Ìİ’è
-	box_size = 20.0;
+	box_size = 12.0;
 
 	//‰Šú‰æ‘œ‚Ìİ’è
 	image = animation[0];
-
-	//¶¬‚ÌˆÚ“®•ûŒü
-	velocity.y = -1;
 
 	mode = 3;
 }
@@ -90,6 +87,7 @@ void Tama::OnHitCollision(GameObject* hit_object)
 	direction = 0.0f;
 	velocity.y = 0.0f;
 	direction = Vector2D(0.0, 0.0);
+	velocity = Vector2D(0.0, 0.0);
 }
 
 //ˆÚ“®ˆ—
@@ -135,3 +133,4 @@ void Tama::AnimeControl()
 		}
 	}
 }
+
