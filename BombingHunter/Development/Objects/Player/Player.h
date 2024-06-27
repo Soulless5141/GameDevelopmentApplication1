@@ -10,8 +10,6 @@ private:
 	int animation_count;   //アニメーション変更時間
 	int filp_flag;         //反転フラグ
 
-	Tama* tama_class;
-
 public:
 	Player();
 	~Player();

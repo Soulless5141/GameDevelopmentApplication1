@@ -14,13 +14,12 @@ protected:
 	double radian;       //向き
 	int image;           //描画する画像
 	int sound;           //再生する音源
-	int mode;
-	int delete_flag;
-	int now_score;
-	int enemy_score;
-	int attack_flag;
+	int mode;            //0;プレイヤー  1;ボム  2;テキ  3;敵の弾
+	int delete_flag;     //メモリ開放判定処理
+	int enemy_score;     //各敵のスコア設定変数
+	int attack_flag;     //攻撃判定
 	//移動の速さ
-	Vector2D velocity = 0.0f;
+	Vector2D velocity = 0.0f;  //デフォルトの動き設定
 
 public:
 	GameObject();
@@ -42,11 +41,10 @@ public:
 	//当たり判定の大きさを取得する
 	Vector2D GetBoxSize() const;
 
-	int GetMode();
-	bool DeleteFlag();
-	int GetScore();
-	bool GetAttackFlag();
+	int GetMode();         //オブジェクトモード取得処理
+	bool DeleteFlag();     //メモリ開放フラグ取得処理
+	int GetScore();        //各敵のスコア取得処理
+	bool GetAttackFlag();  //攻撃判定取得処理
 
-	void GetVelocity(const Vector2D& velocity);
+	void GetVelocity(const Vector2D& velocity);  //進行方向取得処理
 };
-

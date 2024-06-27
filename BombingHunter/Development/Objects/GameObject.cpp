@@ -11,8 +11,7 @@ GameObject::GameObject() :
 	sound(0),
 	mode(0),
 	delete_flag(false),
-	now_score(),
-	enemy_score(),
+	enemy_score(NULL),
 	attack_flag(false)
 {
 

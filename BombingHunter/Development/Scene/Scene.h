@@ -29,6 +29,7 @@ public:
 	void Draw() const;  //描画処理
 	void Finalize();    //終了処理
 
+	//倒した敵のスコア情報取得処理
 	int GetScore();
 
 private:

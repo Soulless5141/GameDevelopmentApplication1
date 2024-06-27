@@ -4,7 +4,7 @@
 class Haneteki : public GameObject
 {
 private:
-	int ptn;
+	int ptn;               ////生成位置ランダム設定
 	int animation[2];      //アニメーション画像
 	int animation_count;   //アニメーション時間
 	int attack_time;

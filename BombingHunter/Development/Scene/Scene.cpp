@@ -41,6 +41,7 @@ void Scene::Initialize()
 		throw("ne-yo");
 	}
 
+	//BGM再生
 	PlaySoundMem(sound, DX_PLAYTYPE_LOOP, TRUE);
 
 	//エラーチェック
@@ -54,6 +55,7 @@ void Scene::Initialize()
 		enemy_count[i] = 0;
 	}
 
+	//敵の初期生成処理
 	if (GetRand(2) == 1)
 	{
 
@@ -79,17 +81,17 @@ void Scene::Update()
 
 	for (int i = 0; i < objects.size(); i++)
 	{
-		if (objects[i]->GetMode() == 2 && objects[i]->GetAttackFlag() == true)
+		//敵の攻撃の生成＆向き設定処理
+		if (objects[i]->GetAttackFlag() == true)
 		{
+			//自機に向かう処理
 			Vector2D p = objects[0]->GetLocation();
 			Vector2D t = objects[i]->GetLocation();
-
-
 			Vector2D l = Vector2D(p.x - t.x, p.y - t.y);
-
 			int z = sqrt((l.x * l.x) + (l.y * l.y));
 
-			CreateObject<Tama>(Vector2D(objects[i]->GetLocation()), l / z);
+			//弾生成処理
+			CreateObject<Tama>(objects[i]->GetLocation(), l / z);
 			
 		}
 	}
@@ -105,7 +107,6 @@ void Scene::Update()
 	{
 		if (GetRand(1) == 1)
 		{
-
 			CreateObject<Haneteki>(Vector2D(640.0f, 0.0f), 0.0);
 		}
 		else
@@ -181,8 +182,7 @@ void Scene::Update()
 		CreateObject<Bom>(objects[0]->GetLocation(), 0.0);
 	}
 
-	
-
+	//ボムのクールタイム設定処理
 	if (bom_set == FALSE)
 	{
 		cool_count++;
@@ -193,6 +193,7 @@ void Scene::Update()
 		}
 	}
 
+	//オブジェクトのメモリ開放判定処理
 	for (int i = 0; i < objects.size(); i++)
 	{
 		if (objects[i]->DeleteFlag() == true)
@@ -217,7 +218,6 @@ void Scene::Draw() const
 	}
 
 	score_class->Draw();
-
 }
 
 
@@ -247,6 +247,7 @@ void Scene::Finalize()
 	delete score_class;
 }
 
+//現在スコア取得処理
 int Scene::GetScore()
 {
 	return score;

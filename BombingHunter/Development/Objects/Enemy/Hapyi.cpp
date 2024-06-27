@@ -4,7 +4,7 @@
 #include"stdlib.h"
 
 //コンストラクタ
-Hapyi::Hapyi() : animation_count(0), direction(0.0f),ptn(GetRand(2))
+Hapyi::Hapyi() : animation_count(0), direction(0.0f),ptn(GetRand(2)),animation()
 {
 	
 }

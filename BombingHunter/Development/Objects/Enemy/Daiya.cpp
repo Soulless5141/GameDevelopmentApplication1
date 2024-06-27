@@ -6,7 +6,10 @@
 //コンストラクタ
 Daiya::Daiya() : animation_count(0), direction(0.0f)
 {
-
+	for (int i = 0; i < 5; i++)
+	{
+		animation[i] = NULL;
+	}
 }
 
 //デストラクタ

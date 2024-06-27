@@ -38,7 +38,7 @@ void Tama::Initialize()
 	radian = 0.0;
 
 	//‘å‚«‚³‚Ìİ’è
-	box_size = 12.0;
+	box_size = 10.0;
 
 	//‰Šú‰æ‘œ‚Ìİ’è
 	image = animation[0];
@@ -70,7 +70,6 @@ void Tama::Finalize()
 {
 	box_size = 0;
 	direction = 0.0f;
-	location = 0;
 	delete_flag = true;
 	//g—p‚µ‚½‰æ‘œ‚ğŠJ•ú‚·‚é
 	DeleteGraph(animation[0]);

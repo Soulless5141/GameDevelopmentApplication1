@@ -6,7 +6,7 @@
 #define MAX_SCORE (10)
 #define MAX_TIME (2)
 
-Score::Score(Scene* owner) : owner_scene(owner), score(0),value(NULL),time(0),lost_time(0)
+Score::Score(Scene* owner) : owner_scene(owner), score(0),value(NULL),time(0),lost_time(0),count_time(0)
 {
 	
 	for (int i = 0; i <= 9; i++)
@@ -38,42 +38,55 @@ void Score::Initialize()
 	image[12] = LoadGraph("Resource/Images/TimeLimit/timer-03.png");
 
 	score = 0;
-	time = 9900;
+	time = 60;
+	count_time = 0;
 
-	s_omote[0] = image[0];
-	t_omote[0] = image[0];
+	s_omote[0] = image[0];    //スコアのUI初期設定
+	t_omote[0] = image[0];    //タイムのUI初期設定
 }
 
 void Score::Update()
 {
-	time = time - 1;
+	count_time++;
+	
+	if (count_time >= 144)
+	{
+		time--;
+		count_time = 0;
+	}
+
+	//シーンcppからスコアの情報を持ってくる
 	this->score = owner_scene->GetScore();
 
+	//受け取った値を基に、UI設定
 	ChangeFont();
 }
 
 void Score::Draw() const
 {
-	int j = 9;
+	int j = 9;     //数字の後ろから表示(一番後ろにする)
 	int k = 0;
 
 	DrawRotaGraph(180, 460, 1.3, 0, image[10], TRUE);//スコア
 	DrawRotaGraph(440, 460, 1.3, 0, image[11], TRUE);//ハイスコア
 	DrawRotaGraph(20, 460, 0.5, 0, image[12], TRUE);//タイマーイラスト
 
+	//スコアの描画処理
 	for (int i = 0; i < MAX_SCORE; i++)
 	{
 		if (s_omote[j] != NULL)
 		{
+			//数字の後ろから表示
 			DrawRotaGraph(225 + (k * 18), 460, 0.11, 0, s_omote[j], TRUE);
 			k++;
 		}
 		j--;
 	}
 
-	j = 3;
+	j = 1;
 	k = 0;
 
+	//タイムの描画処理
 	for (int i = 0; i < MAX_TIME; i++)
 	{
 		if (t_omote[j] != NULL)
@@ -87,12 +100,21 @@ void Score::Draw() const
 
 void Score::Finalize()
 {
-	
+	for (int i = 0; i <= 12; i++)
+	{
+		DeleteGraph(image[i]);
+	}
+	for (int i = 0; i < 10; i++)
+	{
+		DeleteGraph(s_omote[i]);
+		DeleteGraph(t_omote[i]);
+	}
 }
 
 void Score::DamegeFlag()
 {
-	time = time - 200;
+	//プレイヤー被弾で秒数減らす
+	time = time - 2;
 }
 
 //数字のUI変更処理
@@ -136,6 +158,7 @@ void Score::ChangeFont()
 		j = j * 10;
 		k++;
 	}
+
 	if (s_omote[0] == NULL)
 	{
 		s_omote[0] = image[0];

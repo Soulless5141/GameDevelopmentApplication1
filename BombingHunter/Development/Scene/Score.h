@@ -11,6 +11,7 @@ private:
 	int t_omote[10];
 	int score;
 	int time;
+	int count_time;
 	int lost_time;
 	int value;
 

@@ -165,11 +165,13 @@ void Haneteki::AnimeControl()
 	}
 }
 
+//攻撃制御処理
 void Haneteki::AttackControl()
 {
 	//一定時間間隔で攻撃
 	attack_time++;
 
+	//一定時間経つと打つ
 	if (attack_time >= 200)
 	{
 		//カウントリセット

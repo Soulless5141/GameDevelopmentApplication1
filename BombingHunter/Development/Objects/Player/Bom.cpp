@@ -4,7 +4,7 @@
 #include"Player.h"
 
 //コンストラクタ
-Bom::Bom() : animation_count(0), bom_count(0),next_flag(false)
+Bom::Bom() : animation_count(0),next_flag(false)
 {
 	for (int i = 0; i < 4; i++)
 	{
@@ -46,15 +46,14 @@ void Bom::Initialize()
 	//初期画像の設定
 	image = animation[0];
 
+	//オブジェクト設定
 	mode = 1;
 
 	//爆発モーションに移っていいかの確認
 	next_flag = false;
 
+	//移動設定
 	direction = Vector2D(0.0, 1.5);
-
-	enemy_score = 0;
-
 }
 
 //更新処理
@@ -78,8 +77,6 @@ void Bom::Draw() const
 //終了時処理
 void Bom::Finalize()
 {
-	/*box_size = 0;
-	location = 0;*/
 	delete_flag = true;
 	//使用した画像を開放する
 	DeleteGraph(image);
@@ -102,10 +99,11 @@ void Bom::Movement()
 	//現在の位置座標に速さを加算する
 	location += direction;
 
+	//一定座標到達後、起爆モーション
 	if (location.y >= 410)
 	{
-		next_flag = true;
-		direction = 0.0f;
+		next_flag = true;  //起爆アニメーションにする
+		direction = 0.0f;  //座標を止める
 	}
 }
 
