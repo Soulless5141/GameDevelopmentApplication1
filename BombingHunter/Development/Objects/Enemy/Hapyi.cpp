@@ -1,5 +1,6 @@
 #include "Hapyi.h"
 #include"../../Utility/InputControl.h"
+#include"../../Utility/ResourceManager.h"
 #include"DxLib.h"
 #include"stdlib.h"
 
@@ -63,6 +64,8 @@ void Hapyi::Initialize()
 		velocity.x = -((rand() % 6) / 10.0f + 0.5);
 	}
 
+	//オブジェクト設定
+	//0;プレイヤー  1;ボム  2;テキ  3;敵の弾
 	mode = 2;
 }
 

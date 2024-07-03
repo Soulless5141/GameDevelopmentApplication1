@@ -17,7 +17,7 @@ protected:
 	int mode;            //0;プレイヤー  1;ボム  2;テキ  3;敵の弾
 	int delete_flag;     //メモリ開放判定処理
 	int enemy_score;     //各敵のスコア設定変数
-	int attack_flag;     //攻撃判定
+	bool attack_flag;     //攻撃判定
 	//移動の速さ
 	Vector2D velocity = 0.0f;  //デフォルトの動き設定
 

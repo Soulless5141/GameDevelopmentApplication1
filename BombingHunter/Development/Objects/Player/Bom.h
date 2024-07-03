@@ -1,16 +1,21 @@
 #pragma once
 
+#include "vector"
+
 #include"../GameObject.h"
 
+#define ANIMATION_IMAGES (4) //画像枚数
 
 class Bom :public GameObject
 {
 private:
-	int animation[4];      //アニメーション画像
+	int animation[ANIMATION_IMAGES];      //アニメーション画像
 	int animation_count;   //アニメーション変更時間
-	bool next_flag;
+	bool next_flag;        //爆破モーションに移行判定
 	Vector2D direction;    //進行方向
 
+	std::vector<int> animation_data;  //アニメーションデータ
+	std::vector<int> sounds_data;  //アニメーションデータ
 
 public:
 	Bom();

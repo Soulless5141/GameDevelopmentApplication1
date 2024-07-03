@@ -1,5 +1,6 @@
 #include "Tama.h"
 #include"../../Utility/InputControl.h"
+#include"../../Utility/ResourceManager.h"
 #include"DxLib.h"
 #include"stdlib.h"
 #include "../Player/Player.h"
@@ -43,6 +44,8 @@ void Tama::Initialize()
 	//初期画像の設定
 	image = animation[0];
 
+	//オブジェクト設定
+	//0;プレイヤー  1;ボム  2;テキ  3;敵の弾
 	mode = 3;
 }
 

@@ -1,5 +1,6 @@
 #include "Haneteki.h"
 #include"../../Utility/InputControl.h"
+#include"../../Utility/ResourceManager.h"
 #include"DxLib.h"
 #include"stdlib.h"
 
@@ -65,7 +66,8 @@ void Haneteki::Initialize()
 		velocity.x = -((rand() % 8) / 10.0f + 0.2);
 	}
 
-	//敵の種類設定
+	//オブジェクト設定
+	//0;プレイヤー  1;ボム  2;テキ  3;敵の弾
 	mode = 2;
 }
 

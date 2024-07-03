@@ -1,5 +1,6 @@
 #include "Player.h"
 #include"../../Utility/InputControl.h"
+#include"../../Utility/ResourceManager.h"
 #include"DxLib.h"
 
 //コンストラクタ
@@ -18,9 +19,11 @@ Player::~Player()
 //初期化処理
 void Player::Initialize()
 {
+
 	//画像の読み込み
 	animation[0] = LoadGraph("Resource/Images/Tri-Pilot/1.png");
 	animation[1] = LoadGraph("Resource/Images/Tri-Pilot/2.png");
+	sound = LoadSoundMem("Resource/Sounds/bishi.wav");
 
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1)
@@ -37,6 +40,8 @@ void Player::Initialize()
 	//初期画像の設定
 	image = animation[0];
 
+	//オブジェクト設定
+	//0;プレイヤー  1;ボム  2;テキ  3;敵の弾
 	mode = 0;
 }
 
@@ -57,15 +62,15 @@ void Player::Draw() const
 
 
 	//デバッグ用
-#if _DEBUG
-	//当たり判定の可視化
-	Vector2D box_collision_upper_left = location - (Vector2D(1.0f) * (float)scale / 2.0f);
-	Vector2D box_collision_lower_right = location + (Vector2D(1.0f) * (float)scale / 2.0f);
-
-	DrawBoxAA(box_collision_upper_left.x, box_collision_upper_left.y,
-		box_collision_lower_right.x, box_collision_lower_right.y,
-		GetColor(255, 0, 0), FALSE);
-#endif
+//#if _DEBUG
+//	//当たり判定の可視化
+//	Vector2D box_collision_upper_left = location - (Vector2D(1.0f) * (float)scale / 2.0f);
+//	Vector2D box_collision_lower_right = location + (Vector2D(1.0f) * (float)scale / 2.0f);
+//
+//	DrawBoxAA(box_collision_upper_left.x, box_collision_upper_left.y,
+//		box_collision_lower_right.x, box_collision_lower_right.y,
+//		GetColor(255, 0, 0), FALSE);
+//#endif
 }
 
 //終了時処理
@@ -81,6 +86,7 @@ void Player::Finalize()
 void Player::OnHitCollision(GameObject* hit_object)
 {
 	//当たった時の処理
+	PlaySoundMem(sound, DX_PLAYTYPE_BACK);
 }
 
 //移動処理

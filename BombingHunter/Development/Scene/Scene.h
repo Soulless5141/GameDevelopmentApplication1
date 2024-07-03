@@ -5,17 +5,25 @@
 #include"../Objects/GameObject.h"
 #include "Score.h"
 
+#define ENEMY_KINDS   (4)//敵の数
+#define MAX_RESULT    (5)//リザルト画像数
+
 class Scene
 {
 private:
-	int background_image;
-	int sound;
-	int enemy_count[4];
-	int bom_set;
-	int cool_count;
-	int mode;
-	int score;
-	int attack_flag;
+	int background_image;  //背景画像
+	int sounds[6];         //音源
+	int sound;             //再生用音源
+	int enemy_count[ENEMY_KINDS];    //敵の出現頻度
+	int bom_set;           //ボムの発射フラグ
+	int cool_count;        //ボムのクールタイム
+	int mode;              //オブジェクト識別番号
+	int score;             //スコア
+	int time;              //時間
+	int result_count;      //リザルトの進行時間
+	int result_score[MAX_RESULT];   //リザルトの画像
+	int image;             //代入用画像変数
+	bool result_flag;      //リザルト繊維フラグ
 
 	std::vector<GameObject*>objects;
 	Score* score_class;
@@ -55,6 +63,7 @@ private:
 
 		//位置情報の設定
 		new_object->SetLocation(location);
+		//進行方向取得処理
 		new_object->GetVelocity(velocity);
 		//初期化処理
 		new_object->Initialize();

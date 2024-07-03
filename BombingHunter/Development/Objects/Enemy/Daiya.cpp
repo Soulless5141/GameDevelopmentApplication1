@@ -1,5 +1,6 @@
 #include "Daiya.h"
 #include"../../Utility/InputControl.h"
+#include"../../Utility/ResourceManager.h"
 #include"DxLib.h"
 #include"stdlib.h"
 
@@ -30,11 +31,14 @@ void Daiya::Initialize()
 
 
 	//エラーチェック
-	if (animation[0] == -1 || animation[1] == -1)
+	for (int i = 0; i < 5; i++)
 	{
-		throw("ダイヤの画像がありません\n");
+		if (animation[i] == -1)
+		{
+			throw("ダイヤの画像がありません\n");
+		}
 	}
-
+	
 	//向きの設定
 	radian = 0.0;
 
@@ -47,7 +51,7 @@ void Daiya::Initialize()
 	//スコア設定
 	enemy_score = 77777;
 
-	//生成時の移動方向
+	//生成時の移動方向&速度ランダム
 	if (location.x <= 300.0f)
 	{
 		velocity.x = GetRand(7) / 10.0f + 0.3f;
@@ -57,6 +61,8 @@ void Daiya::Initialize()
 		velocity.x = -(GetRand(7) / 10.0f + 0.3);
 	}
 
+	//オブジェクト設定
+	//0;プレイヤー  1;ボム  2;テキ  3;敵の弾
 	mode = 2;
 }
 
@@ -97,16 +103,14 @@ void Daiya::Finalize()
 {
 	box_size = 0;
 	direction = 0.0f;
-	location = 0;
 	delete_flag = true;
 	//使用した画像を開放する
 	for (int i = 0; i <= 4; i++)
 	{
 		DeleteGraph(animation[i]);
 	}
+	//メモリ開放
 	DeleteGraph(image);
-
-
 }
 
 //当たり判定通知処理
@@ -122,7 +126,7 @@ void Daiya::Movement()
 	//現在の位置座標に速さを加算する
 	location += velocity;
 
-	//
+	//画面外に行くと消える
 	if (location.x < -20 || location.x > 660)
 	{
 		Finalize();

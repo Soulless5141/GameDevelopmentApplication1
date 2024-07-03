@@ -7,7 +7,7 @@ private:
 	int ptn;               ////生成位置ランダム設定
 	int animation[2];      //アニメーション画像
 	int animation_count;   //アニメーション時間
-	int attack_time;
+	int attack_time;       //攻撃制御処理
 	Vector2D direction;    //進行方向
 
 public:

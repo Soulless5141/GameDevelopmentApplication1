@@ -6,7 +6,7 @@ class Tama : public GameObject
 private:
 	int animation[4];      //アニメーション画像
 	int animation_count;   //アニメーション時間
-	int next_flag;
+	int next_flag;         //爆破アニメーション判定フラグ
 	Vector2D direction;    //進行方向
 
 public:
