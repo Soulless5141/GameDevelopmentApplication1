@@ -1,15 +1,24 @@
 ﻿#pragma once
 
 #include "../GameObject.h"
-#include "../../Utility/StageData.h"
+#include "../Player/Player.h"
+#include "State/Enum/EnemyState.h"
 
-enum eEnemyState
+// 進行方向状態
+enum eEnemyDirection : unsigned char
 {
-	HOME,
-	ATACCK,		// 追尾状態
-	PATROL,		// 巡回状態
-	IZIKE,		// いじけ状態
-	GOHOME		// 死亡状態
+	EUP,
+	ERIGHT,
+	EDOWN,
+	ELEFT
+};
+
+enum eEnemyType : unsigned int
+{
+	AKABEI = 0,
+	PINKY  = 1,
+	AOSUKE = 2,
+	GUZUTA = 3,
 };
 
 /// <summary>
@@ -17,29 +26,42 @@ enum eEnemyState
 /// </summary>
 class EnemyBase : public GameObject
 {
-private:
-	// 進行方向状態
-	enum eDirectionState : unsigned char
-	{
-		UP,
-		RIGHT,
-		DOWN,
-		LEFT,
-		NONE,
-	};
+public:
+	
 
 protected:
 	std::vector<int> move_animation;		// 移動のアニメーション画像
-	Vector2D old_location;					// 前回のlocation
+	std::vector<int> eye_animation;
+	class Player* player;
 	Vector2D velocity;						// 移動量
 	eEnemyState enemy_state;
-	eDirectionState now_direction_state;	// 現在進行方向状態
-	eDirectionState next_direction_state;	// 次回進行方向状態
+	eEnemyState old_enemy_state;
+	eEnemyDirection now_direction;			// 現在進行方向状態
+	eEnemyDirection old_direction;			// 現在進行方向状態
 	float animation_time;					// アニメーション時間
-	const int animation_num[4];
-	const int animation_eye[4];
+	eEnemyType enemy_type;
 	int animation_count;					// アニメーション添字
-	
+
+	char now_type;
+
+	class Akabei* akabei;
+	class Aosuke* aosuke;
+	class Guzuta* guzuta;
+	class Pinky* pinky;
+
+	int panel_x;
+	int panel_y;
+
+private:
+	float world_time;
+	float izike_time;
+
+	float frame_time;
+	float izike_right_time;
+	bool right_flag;
+
+	bool home_flag;
+	float home_time;
 
 public:
 	EnemyBase();
@@ -49,8 +71,26 @@ public:
 	virtual void Update(float delta_second) override;
 	virtual void Draw(const Vector2D& screen_offset) const override;
 	virtual void Finalize() override;
+	void AnimationControl(float delta_second);
+	eEnemyState GetEnemyState();
+	eEnemyDirection GetEnemyDirection();
+	virtual void OnHitCollision(GameObjectBase* hit_object) override;
+	void Movement(float delta_second);
+	virtual void HomeMovement(float delta_second);
+	virtual void PatrolMovement(float delta_second);
+	virtual void IzikeMovement(float delta_second);
+	virtual void GoHomeMovement(float delta_second);
 
-	eEnemyState GetEnemyMode() const;
+	char ChangeEnemyType();
+
+	void GetPlayer(Player* player);
+
+	//eEnemyState GetIzike();
+
+protected:
+	virtual void AttackMovement(float delta_second);
+
+	//eEnemyState GetEnemyMode() const;
 
 	/// <summary>
 	/// 当たり判定通知処理

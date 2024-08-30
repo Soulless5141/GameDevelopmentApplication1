@@ -2,6 +2,7 @@
 
 #include "../GameObject.h"
 #include "../../Utility/StageData.h"
+#include "../Enemy/EnemyBase.h"
 
 // プレイヤー状態
 enum ePlayerState
@@ -42,8 +43,14 @@ private:
 	bool is_power_up;						// パワー餌を食べたか？
 	bool is_destroy;						// 死んだ状態になったか？
 
+	int power_up_time;
+	float frame_time;
+
 	// 移動アニメーションの順番
 	const int animation_num[4] = { 0, 1, 2, 1, };
+
+public:
+	class EnemyBase* enemy;
 
 public:
 	Player();
@@ -53,6 +60,8 @@ public:
 	virtual void Update(float delta_second) override;
 	virtual void Draw(const Vector2D& screen_offset) const override;
 	virtual void Finalize() override;
+
+	void GetEnemy(class EnemyBase* enemy);
 
 	/// <summary>
 	/// 当たり判定通知処理
@@ -78,6 +87,14 @@ public:
 	/// </summary>
 	/// <returns>プレイヤーの状態</returns>
 	bool GetPowerUp() const;
+
+
+	float GetPowerUpTime() const;
+
+	/// <summary>
+	/// パワーアップの時間制限
+	/// </summary>
+	void SetPowerUp(float delta_second);
 
 	/// <summary>
 	/// パワーダウンさせる

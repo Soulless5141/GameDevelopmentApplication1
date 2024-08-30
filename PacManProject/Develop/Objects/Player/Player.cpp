@@ -18,7 +18,8 @@ Player::Player() :
 	animation_count(0),
 	old_panel(ePanelID::NONE),
 	is_power_up(false),
-	is_destroy(false)
+	is_destroy(false),
+	power_up_time(0)
 {
 
 }
@@ -87,6 +88,11 @@ void Player::Update(float delta_second)
 		default:
 			break;
 	}
+
+	if (power_up_time > 0)
+	{
+		SetPowerUp(delta_second);
+	}
 }
 
 void Player::Draw(const Vector2D& screen_offset) const
@@ -140,11 +146,14 @@ void Player::OnHitCollision(GameObjectBase* hit_object)
 	if(hit_object->GetCollision().object_type == eObjectType::power_food)
 	{
 		food_count++;
+		power_up_time = 10;
+		frame_time = 0;
 		is_power_up = true;
 	}
 
 	// 当たったオブジェクトが敵だったら
-	if(hit_object->GetCollision().object_type == eObjectType::enemy)
+	if(hit_object->GetCollision().object_type == eObjectType::enemy && is_power_up == false &&
+		(enemy->GetEnemyState() != eEnemyState::IZIKE && enemy->GetEnemyState() != eEnemyState::GOHOME))
 	{
 		player_state = ePlayerState::DIE;
 	}
@@ -175,6 +184,30 @@ ePlayerState Player::GetPlayerState() const
 bool Player::GetPowerUp() const
 {
 	return is_power_up;
+}
+
+float Player::GetPowerUpTime() const
+{
+	return power_up_time;
+}
+
+/// <summary>
+/// パワーアップの制限時間
+/// </summary>
+void Player::SetPowerUp(float delta_second)
+{
+	frame_time++;
+
+	// いじけ状態の秒数減らし
+	if (1 < frame_time * delta_second && power_up_time >= 0)
+	{
+		frame_time = 0;
+		power_up_time--;
+		if (power_up_time <= 0)
+		{
+			SetPowerDown();
+		}
+	}
 }
 
 /// <summary>
@@ -256,7 +289,7 @@ void Player::Movement(float delta_second)
 	ePanelID panel = StageData::GetPanelData(location);
 
 	// 入力から移動方向を設定
-	if(input->GetKeyDown(KEY_INPUT_UP) || input->GetButtonDown(XINPUT_BUTTON_DPAD_UP))
+	if(input->GetKeyDown(KEY_INPUT_W) || input->GetButtonDown(XINPUT_BUTTON_DPAD_UP))
 	{
 		switch(now_direction_state)
 		{
@@ -271,7 +304,7 @@ void Player::Movement(float delta_second)
 				next_direction_state = eDirectionState::UP;
 		}	
 	}
-	else if(input->GetKeyDown(KEY_INPUT_DOWN) || input->GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
+	else if(input->GetKeyDown(KEY_INPUT_S) || input->GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
 	{
 		switch(now_direction_state)
 		{
@@ -286,7 +319,7 @@ void Player::Movement(float delta_second)
 				next_direction_state = eDirectionState::DOWN;
 		}
 	}
-	else if(input->GetKeyDown(KEY_INPUT_LEFT) || input->GetButtonDown(XINPUT_BUTTON_DPAD_LEFT))
+	else if(input->GetKeyDown(KEY_INPUT_A) || input->GetButtonDown(XINPUT_BUTTON_DPAD_LEFT))
 	{
 		switch(now_direction_state)
 		{
@@ -301,7 +334,7 @@ void Player::Movement(float delta_second)
 				next_direction_state = eDirectionState::LEFT;
 		}
 	}
-	else if(input->GetKeyDown(KEY_INPUT_RIGHT) || input->GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
+	else if(input->GetKeyDown(KEY_INPUT_D) || input->GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
 	{
 		switch(now_direction_state)
 		{
@@ -321,16 +354,16 @@ void Player::Movement(float delta_second)
 	switch(now_direction_state)
 	{
 		case Player::UP:
-			velocity.y = -1.0f;
+			velocity.y = -2.0f;
 			break;
 		case Player::DOWN:
-			velocity.y = 1.0f;
+			velocity.y = 2.0f;
 			break;
 		case Player::LEFT:
-			velocity.x = -1.0f;
+			velocity.x = -2.0f;
 			break;
 		case Player::RIGHT:
-			velocity.x = 1.0f;
+			velocity.x = 2.0;
 			break;
 		default:
 			velocity = 0.0f;
@@ -346,16 +379,16 @@ void Player::Movement(float delta_second)
 		switch(next_direction_state)
 		{
 			case Player::UP:
-				velocity.y = -1.0f;
+				velocity.y = -2.0f;
 				break;
 			case Player::RIGHT:
-				velocity.x = 1.0f;
+				velocity.x = 2.0f;
 				break;
 			case Player::DOWN:
-				velocity.y = 1.0f;
+				velocity.y = 2.0f;
 				break;
 			case Player::LEFT:
-				velocity.x = -1.0f;
+				velocity.x = -2.0f;
 				break;
 			default:
 				break;
@@ -410,4 +443,9 @@ void Player::AnimationControl(float delta_second)
 		}
 
 	}
+}
+
+void Player::GetEnemy(class EnemyBase* enemy)
+{
+	this->enemy = enemy;
 }

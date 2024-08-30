@@ -11,6 +11,7 @@
 
 InGameScene::InGameScene() 
 	: player(nullptr)
+	, enemy(nullptr)
 	, back_ground_image(NULL)
 	, back_ground_sound(NULL)
 	, pause_flag(false)
@@ -67,6 +68,9 @@ eSceneType InGameScene::Update(const float& delta_second)
 			return eSceneType::re_start;
 		}
 	}
+
+	player->GetEnemy(enemy);
+
 
 	// シーン情報を返却する
 	return GetNowSceneType();
@@ -183,11 +187,14 @@ void InGameScene::LoadStageMapCSV()
 			case 'P':
 				generate_location = (Vector2D((float)(spos_x - 1), (float)(spos_y - 1)) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 				player = CreateObject<Player>(generate_location);
+				player->GetEnemy(enemy);
 				break;
 			// エネミー
 			case 'E':
 				generate_location = (Vector2D((float)(spos_x - 1), (float)(spos_y - 1)) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
-				CreateObject<EnemyBase>(generate_location);
+				enemy = CreateObject<EnemyBase>(generate_location);
+				enemy->ChangeEnemyType();
+				enemy->GetPlayer(player);
 				break;
 			// 上記以外
 			default:

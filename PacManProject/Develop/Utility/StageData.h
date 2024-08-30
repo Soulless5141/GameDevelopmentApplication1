@@ -1,6 +1,5 @@
 ﻿#include <vector>
 #include <map>
-
 #include "Vector2D.h"
 
 /// <summary>
@@ -11,7 +10,7 @@ enum ePanelID : unsigned char
 	WALL,
 	BRANCH,
 	GATE,
-	NONE
+	NONE,
 };
 
 /// <summary>
@@ -22,7 +21,7 @@ enum eAdjacentDirection : unsigned char
 	UP = 0,
 	DOWN,
 	LEFT,
-	RIGHT
+	RIGHT,
 };
 
 /// <summary>
