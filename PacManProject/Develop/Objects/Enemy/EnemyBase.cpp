@@ -7,11 +7,11 @@
 
 
 EnemyBase::EnemyBase() :
-	izike_time(0),
 	enemy_state(eEnemyState::HOME),
 	right_flag(FALSE),
 	home_flag(TRUE),
-	home_time(0)
+	home_time(0),
+	get_flag(false)
 {
 }
 
@@ -35,6 +35,8 @@ void EnemyBase::Initialize()
 
 	// 可動性の設定
 	mobility = eMobilityType::Movable;
+
+	z_layer = 10;
 }
 
 void EnemyBase::Update(float delta_second)
@@ -64,6 +66,7 @@ void EnemyBase::Draw(const Vector2D& screen_offset) const
 //プレイヤーの状態取得
 void EnemyBase::GetPlayer(Player* player)
 {
+	// プレイヤーの状態取得
 	this->player = player;
 }
 
@@ -78,7 +81,7 @@ void EnemyBase::AnimationControl(float delta_second)
 {
 	// 移動中のアニメーション
 	animation_time += delta_second;
-	if (animation_time >= (1.0f / 16.0f))
+	if (animation_time >= (1.0f / 32.0f))
 	{
 		animation_time = 0.0f;
 		animation_count++;
@@ -181,7 +184,7 @@ void EnemyBase::OnHitCollision(GameObjectBase* hit_object)
 
 	// 当たったオブジェクトが敵だったら
 	
-
+	// いじけ状態の時、GOHOME状態になる
 	if (hit_object->GetCollision().object_type == eObjectType::player)
 	{
 		player->GetEnemy(this);
@@ -208,6 +211,7 @@ void EnemyBase::OnHitCollision(GameObjectBase* hit_object)
 	}
 }
 
+// 最初で敵の種類を分ける
 char EnemyBase::ChangeEnemyType()
 {
 	StageData::ConvertToIndex(location, panel_x, panel_y);
@@ -220,6 +224,8 @@ char EnemyBase::ChangeEnemyType()
 	case 13:
 		this->now_type = eEnemyType::AKABEI;
 		enemy_state = PATROL;
+		now_direction = ERIGHT;
+		//enemy_state = GOHOME; //                      aaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 		break;
 	case 14:
 		this->now_type = eEnemyType::PINKY;
@@ -421,6 +427,7 @@ void EnemyBase::Movement(float delta_second)
 
 void EnemyBase::HomeMovement(float delta_second)
 {
+	// ハウスの中の敵が、壁にぶつかると方向転換する
 	switch (now_type)
 	{
 	case AOSUKE:
@@ -452,21 +459,63 @@ void EnemyBase::HomeMovement(float delta_second)
 //巡回
 void EnemyBase::PatrolMovement(float delta_second)
 {
-	switch (now_type)
+	// 現在パネルの状態を確認
+	ePanelID panel = StageData::GetPanelData(location);
+
+	// 方向変換フラグ
+	if (get_flag == false && panel == ePanelID::NONE)
 	{
-	case eEnemyType::AKABEI:
-		break;
-	case eEnemyType::AOSUKE:
-		break;
-	case eEnemyType::GUZUTA:
-		break;
-	case eEnemyType::PINKY:
-		break;
-	default:
-		break;
+		get_flag = true;
 	}
 
+	// 方向変換処理
+	if (panel == ePanelID::BRANCH && get_flag == true)
+	{
+		std::map<eAdjacentDirection, ePanelID> ret = StageData::GetAdjacentPanelData(location);
 
+		if (ret[eAdjacentDirection::UP] != WALL && old_direction != EUP)
+		{
+			old_direction = now_direction;
+			now_direction = EUP;
+		}
+		else if (ret[eAdjacentDirection::RIGHT] != WALL && old_direction != ERIGHT)
+		{
+			old_direction = now_direction;
+			now_direction = ERIGHT;
+		}
+		else if (ret[eAdjacentDirection::DOWN] != WALL && old_direction != EDOWN)
+		{
+			old_direction = now_direction;
+			now_direction = EDOWN;
+		}
+		else if (ret[eAdjacentDirection::LEFT] != WALL && old_direction != ELEFT)
+		{
+			old_direction = now_direction;
+			now_direction = ELEFT;
+		}
+
+		
+
+		/*switch (now_direction)
+		{
+		case EUP:
+			now_direction = ERIGHT;
+			break;
+		case ERIGHT:
+			now_direction = EDOWN;
+			break;
+		case EDOWN:
+			now_direction = ELEFT;
+			break;
+		case ELEFT:
+			now_direction = EUP;
+			break;
+		default:
+			break;
+		}*/
+
+		get_flag = false; //一度通路に行かないと変換しないようにする
+	}
 }
 
 void EnemyBase::IzikeMovement(float delta_second)
@@ -477,6 +526,7 @@ void EnemyBase::IzikeMovement(float delta_second)
 		HomeMovement(delta_second);
 	}
 
+	// いじけ状態解除
 	if (player->GetPowerUp() == false)
 	{
 		if (old_enemy_state != GOHOME)
@@ -493,7 +543,16 @@ void EnemyBase::IzikeMovement(float delta_second)
 
 void EnemyBase::GoHomeMovement(float delta_second)
 {
-	
+	// 現在パネルの状態を確認
+	ePanelID panel = StageData::GetPanelData(location);
+
+	if (panel == ePanelID::BRANCH)
+	{
+		if (panel <= 100)
+		{
+			now_direction = ERIGHT;
+		}
+	}
 }
 
 void EnemyBase::AttackMovement(float delta_second)
@@ -514,8 +573,3 @@ void EnemyBase::AttackMovement(float delta_second)
 	}
 
 }
-
-//eEnemyState EnemyBase::GetIzike()
-//{
-//	return enemy_state;
-//}

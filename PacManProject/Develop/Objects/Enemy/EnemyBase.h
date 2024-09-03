@@ -54,7 +54,6 @@ protected:
 
 private:
 	float world_time;
-	float izike_time;
 
 	float frame_time;
 	float izike_right_time;
@@ -62,6 +61,8 @@ private:
 
 	bool home_flag;
 	float home_time;
+
+	bool get_flag;
 
 public:
 	EnemyBase();
@@ -84,8 +85,6 @@ public:
 	char ChangeEnemyType();
 
 	void GetPlayer(Player* player);
-
-	//eEnemyState GetIzike();
 
 protected:
 	virtual void AttackMovement(float delta_second);

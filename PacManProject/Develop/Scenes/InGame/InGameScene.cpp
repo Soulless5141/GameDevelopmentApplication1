@@ -63,14 +63,14 @@ eSceneType InGameScene::Update(const float& delta_second)
 		}
 
 		// プレイヤーが死んだら、再スタート
-		if (player->GetDestroy())
+		if (player->GetDestroy() || input->GetKeyDown(KEY_INPUT_R))
 		{
 			return eSceneType::re_start;
 		}
 	}
 
 	player->GetEnemy(enemy);
-
+	enemy->GetPlayer(player);
 
 	// シーン情報を返却する
 	return GetNowSceneType();
