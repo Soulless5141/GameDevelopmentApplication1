@@ -11,7 +11,7 @@ EnemyBase::EnemyBase() :
 	right_flag(FALSE),
 	home_flag(TRUE),
 	home_time(0),
-	get_flag(false)
+	get_flag(true)
 {
 }
 
@@ -57,6 +57,7 @@ void EnemyBase::Draw(const Vector2D& screen_offset) const
 	// オフセット値を基に画像の描画を行う
 	Vector2D graph_location = this->location + screen_offset;
 
+	// 目の描画
 	if (enemy_state != IZIKE)
 	{
 		DrawRotaGraphF(graph_location.x, graph_location.y, 1.0, 0.0, eye_animation[now_direction], TRUE);
@@ -224,7 +225,7 @@ char EnemyBase::ChangeEnemyType()
 	case 13:
 		this->now_type = eEnemyType::AKABEI;
 		enemy_state = PATROL;
-		now_direction = ERIGHT;
+		now_direction = ELEFT;
 		//enemy_state = GOHOME; //                      aaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 		break;
 	case 14:
@@ -473,22 +474,22 @@ void EnemyBase::PatrolMovement(float delta_second)
 	{
 		std::map<eAdjacentDirection, ePanelID> ret = StageData::GetAdjacentPanelData(location);
 
-		if (ret[eAdjacentDirection::UP] != WALL && old_direction != EUP)
+		if (ret[eAdjacentDirection::UP] != WALL && now_direction != EDOWN)
 		{
 			old_direction = now_direction;
 			now_direction = EUP;
 		}
-		else if (ret[eAdjacentDirection::RIGHT] != WALL && old_direction != ERIGHT)
+		else if (ret[eAdjacentDirection::RIGHT] != WALL && now_direction != ELEFT)
 		{
 			old_direction = now_direction;
 			now_direction = ERIGHT;
 		}
-		else if (ret[eAdjacentDirection::DOWN] != WALL && old_direction != EDOWN)
+		else if (ret[eAdjacentDirection::DOWN] != WALL && now_direction != EUP)
 		{
 			old_direction = now_direction;
 			now_direction = EDOWN;
 		}
-		else if (ret[eAdjacentDirection::LEFT] != WALL && old_direction != ELEFT)
+		else if (ret[eAdjacentDirection::LEFT] != WALL && now_direction != ERIGHT)
 		{
 			old_direction = now_direction;
 			now_direction = ELEFT;
